@@ -1,4 +1,204 @@
-<<!--<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pescuit Exact PRO</title>
+    <style>
+        :root { --text: #fff; --acc: #00ff88; --bg: #0b0e14; --img: url('https://transparenttextures.com'); }
+        [data-theme="solar"] { --text: #111; --acc: #ff6600; --bg: #f0f0f0; --img: url('https://transparenttextures.com'); }
+        [data-theme="camo"] { --text: #f0e68c; --acc: #a2ad91; --bg: #2e331a; --img: url('https://transparenttextures.com'); }
+
+        body, html { margin: 0; padding: 0; min-height: 100vh; font-family: sans-serif; background-color: var(--bg); transition: 0.3s; }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: var(--img); z-index: -1; }
+        .content-wrapper { padding: 15px; color: var(--text); text-align: center; max-width: 500px; margin: auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .header-left { display: flex; gap: 10px; }
+        #btn-home { background: var(--acc); border: none; border-radius: 5px; cursor: pointer; padding: 5px 10px; font-size: 1.2rem; }
+        .logo-text { font-weight: bold; color: var(--acc); }
+
+        .main-nav { display: flex; gap: 8px; margin-bottom: 20px; }
+        .main-nav button { flex: 1; padding: 12px; border: 2px solid var(--acc); background: rgba(0,0,0,0.3); color: var(--text); border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        .pro-card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; border-top: 4px solid var(--acc); text-align: left; margin-bottom: 20px; }
+        .stars { color: #ffcc00; }
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .data-item { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; font-size: 0.9rem; border-bottom: 2px solid var(--acc); }
+        .info-block { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; font-size: 0.95rem; line-height: 1.4; border: 1px solid rgba(255,255,255,0.1); }
+
+        .hidden { display: none !important; }
+        #lake-search { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 2px solid var(--acc); background: rgba(0,0,0,0.2); color: var(--text); box-sizing: border-box; font-size: 1rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+        td, th { padding: 12px 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { color: var(--acc); background: rgba(0,0,0,0.2); }
+        .lake-row:hover { background: rgba(255,255,255,0.05); }
+        .action-btn { background: var(--acc); color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="content-wrapper">
+        <header>
+            <div class="header-left">
+                <button id="btn-home">🏠</button>
+                <select id="lang-select">
+                    <option value="ro">RO</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
+            <div class="logo-text">PESCUIT EXACT</div>
+            <select id="theme-select">
+                <option value="dark">Midnight</option>
+                <option value="solar">Solar</option>
+                <option value="camo">Camo</option>
+            </select>
+        </header>
+
+        <nav class="main-nav">
+            <button id="nav-river">🌊 DUNĂRE</button>
+            <button id="nav-lake">🎣 BĂLȚI</button>
+            <button id="nav-calc">🧮 CALC</button>
+        </nav>
+
+        <section id="details-section" class="hidden">
+            <div id="search-container" class="hidden">
+                <input type="text" id="lake-search" placeholder="Caută județ (ex: Cluj, Ilfov)...">
+            </div>
+            
+            <div class="pro-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+                    <h2 id="loc-name" style="margin:0; font-size: 1.4rem;">Selectează Locația</h2>
+                    <div id="loc-rating" class="stars"></div>
+                </div>
+                
+                <div class="data-grid">
+                    <div class="data-item">💰 Taxă: <br><b id="loc-taxa">--</b></div>
+                    <div class="data-item">📍 Județ: <br><b id="loc-judet">--</b></div>
+                </div>
+
+                <div class="info-block">
+                    <h4 style="margin:0 0 8px 0; color:var(--acc); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Regulament & Detalii</h4>
+                    <p id="loc-reguli" style="margin:0;">Apasă pe o baltă din lista de mai jos pentru a vedea regulile specifice.</p>
+                </div>
+            </div>
+
+            <div class="table-view">
+                <table id="main-table"></table>
+            </div>
+        </section>
+
+        <section id="calc-section" class="hidden pro-card">
+            <h3>🧮 Calculator Momeli</h3>
+            <p>Temperatură apă: <span id="temp-val">15</span>°C</p>
+            <input type="range" id="calc-temp" min="4" max="30" value="15" style="width:100%; accent-color:var(--acc);">
+            <button id="btn-calculate" class="action-btn">Generează Rețetă</button>
+            <div id="calc-result" class="info-block" style="margin-top:15px; display:none;"></div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lacuriDB = [
+                { nume: "Chiroiu 4", judet: "Ialomița", taxa: "100 RON", reguli: "C&R la crap >4kg. Maxim 4 lansete. Reținere caras permisă.", rating: 5 },
+                { nume: "Hermes Periș", judet: "Ilfov", taxa: "150 RON", reguli: "Doar monturi fir de păr. Saltea tip cadă obligatorie. Pescuit exclusiv sportiv.", rating: 5 },
+                { nume: "Moara Vlăsiei 2", judet: "Ilfov", taxa: "120 RON", reguli: "Fără momeală vie. C&R obligatoriu. Standuri dotate cu curent.", rating: 5 },
+                { nume: "Lacul Ciuperca", judet: "Cluj", taxa: "60 RON", reguli: "Fără reținere pește nobil. Maxim 3 lansete per pescar.", rating: 4 },
+                { nume: "Săcueni", judet: "Bihor", taxa: "80 RON", reguli: "Crap și Ten. Se folosesc doar monturi care permit eliberarea plumbului.", rating: 5 },
+                { nume: "Bezidu Nou", judet: "Mureș", taxa: "Permis ANPA", reguli: "Regim de stat. Se pescuiește conform legislației în vigoare.", rating: 4 },
+                { nume: "Larga Jijia", judet: "Iași", taxa: "70 RON", reguli: "Reținere 5kg inclusă în preț. Interzis scăldatul.", rating: 3 }
+            ];
+
+            const resetApp = () => {
+                document.getElementById('details-section').classList.add('hidden');
+                document.getElementById('calc-section').classList.add('hidden');
+                document.getElementById('lake-search').value = "";
+                document.getElementById('loc-name').innerText = "Selectează Locația";
+                document.getElementById('loc-taxa').innerText = "--";
+                document.getElementById('loc-judet').innerText = "--";
+                document.getElementById('loc-reguli').innerText = "Apasă pe o baltă din lista de mai jos pentru a vedea regulile specifice.";
+                document.getElementById('loc-rating').innerText = "";
+            };
+
+            const showLake = (name) => {
+                const l = lacuriDB.find(x => x.nume === name);
+                if (!l) return;
+                document.getElementById('loc-name').innerText = l.nume;
+                document.getElementById('loc-taxa').innerText = l.taxa;
+                document.getElementById('loc-judet').innerText = l.judet;
+                document.getElementById('loc-reguli').innerText = l.reguli;
+                document.getElementById('loc-rating').innerText = "⭐".repeat(l.rating);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const renderLakes = (data) => {
+                const table = document.getElementById('main-table');
+                let html = `<thead><tr><th>Nume</th><th>Județ</th><th>Rating</th></tr></thead><tbody>`;
+                data.forEach(l => {
+                    html += `<tr class="lake-row" data-name="${l.nume}" style="cursor:pointer">
+                                <td><b>${l.nume}</b></td><td>${l.judet}</td><td>${"⭐".repeat(l.rating)}</td>
+                             </tr>`;
+                });
+                html += `</tbody>`;
+                table.innerHTML = html;
+                document.querySelectorAll('.lake-row').forEach(row => {
+                    row.addEventListener('click', () => showLake(row.getAttribute('data-name')));
+                });
+            };
+
+            document.getElementById('nav-river').addEventListener('click', () => {
+                resetApp();
+                document.getElementById('details-section').classList.remove('hidden');
+                document.getElementById('search-container').classList.add('hidden');
+                document.getElementById('loc-name').innerText = "Dunăre - Cotele Apelor";
+                document.getElementById('main-table').innerHTML = `<thead><tr><th>Stație</th><th>Cotă</th></tr></thead><tbody><tr><td>Baziaș</td><td>+12</td></tr><tr><td>Giurgiu</td><td>+2</td></tr></tbody>`;
+            });
+
+            document.getElementById('nav-lake').addEventListener('click', () => {
+                resetApp();
+                document.getElementById('details-section').classList.remove('hidden');
+                document.getElementById('search-container').classList.remove('hidden');
+                renderLakes(lacuriDB);
+            });
+
+            document.getElementById('lake-search').addEventListener('input', (e) => {
+                const val = e.target.value.toLowerCase();
+                const filtered = lacuriDB.filter(l => l.judet.toLowerCase().includes(val) || l.nume.toLowerCase().includes(val));
+                renderLakes(filtered);
+            });
+
+            document.getElementById('nav-calc').addEventListener('click', () => {
+                resetApp();
+                document.getElementById('calc-section').classList.remove('hidden');
+            });
+
+            document.getElementById('btn-home').addEventListener('click', () => location.reload());
+
+            document.getElementById('calc-temp').addEventListener('input', (e) => {
+                document.getElementById('temp-val').innerText = e.target.value;
+            });
+
+            document.getElementById('btn-calculate').addEventListener('click', () => {
+                const temp = document.getElementById('calc-temp').value;
+                const res = document.getElementById('calc-result');
+                res.style.display = "block";
+                res.innerHTML = temp < 15 ? "<b>Apă Rece:</b> Nadă fină, arome fructate, viermuși." : "<b>Apă Caldă:</b> Pelete proteice, arome scoică/usturoi.";
+            });
+
+            document.getElementById('theme-select').addEventListener('change', (e) => {
+                document.documentElement.setAttribute('data-theme', e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+<<!--
+    <!DOCTYPE html>
 <html lang="ro" data-theme="dark">
 <head>
     <meta charset="UTF-8">
