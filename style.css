@@ -24,7 +24,7 @@ th { text-align: left; color: var(--acc); border-bottom: 1px solid var(--acc); p
 td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
 
-/* Buton Home*/
+Buton Home
 .header-left { display: flex; gap: 8px; align-items: center; }
 
 #btn-home {
@@ -43,4 +43,19 @@ td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
     box-shadow: 0 0 10px var(--acc);
 }
 
-/* Buton Home*/
+/* ... stilurile anterioare + ... */
+.pro-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-top: 4px solid var(--acc);
+    text-align: left;
+}
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.stars { color: #ffcc00; font-size: 1.2rem; }
+.data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+.data-item { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; }
+.info-block { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; line-height: 1.5; }
+.action-btn { background: var(--acc); color: #000; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
+input[type="range"] { width: 100%; accent-color: var(--acc); }
