@@ -63,3 +63,10 @@ function selectType(type) {
         console.log("Switch to Lake Mode");
     }
 }
+
+
+// Forțează tema la încărcarea paginii
+window.onload = () => {
+    const savedTheme = document.getElementById('theme-select').value;
+    document.documentElement.setAttribute('data-theme', savedTheme);
+};
