@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact PRO | România</title>
+    <title>Pescuit Exact PRO</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -27,99 +27,8 @@
 
         <nav class="main-nav">
             <button onclick="updateData('river')">🌊 DUNĂRE</button>
-            <button onclick="updateData('lake')">🎣 TOATE BĂLȚILE</button>
-            <button onclick="showCalculator()">🧮 CALCULATOR</button>
-        </nav>
-
-        <section id="details-section" class="hidden">
-            <div id="search-container" class="hidden">
-                <input type="text" id="lake-search" placeholder="Caută Județ sau Nume Baltă..." onkeyup="filterLakes()">
-            </div>
-
-            <!-- Card Principal Dinamic -->
-            <div class="pro-card">
-                <div class="card-header">
-                    <h2 id="loc-name">Selectează Locația</h2>
-                    <div id="loc-rating" class="stars">⭐⭐⭐⭐⭐</div>
-                </div>
-                <div class="data-grid">
-                    <div class="data-item"><span>Taxă:</span> <b id="loc-taxa">--</b></div>
-                    <div class="data-item"><span>Județ:</span> <b id="loc-judet">--</b></div>
-                </div>
-                <div class="info-block">
-                    <h4>📜 Regulament & Detalii:</h4>
-                    <p id="loc-reguli">Selectează o baltă din lista de mai jos.</p>
-                </div>
-            </div>
-
-            <div class="table-view">
-                <h4 id="table-title">Informații</h4>
-                <div class="table-scroll">
-                    <table id="main-table"></table>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sectiune Calculator Momeli -->
-        <section id="calc-section" class="hidden pro-card">
-            <h3>🧮 Calculator Nadă & Momeală</h3>
-            <label>Specia țintă:</label>
-            <select id="calc-fish">
-                <option value="crap">Crap</option>
-                <option value="caras">Caras / Plătică</option>
-                <option value="mreana">Mreană (Dunăre)</option>
-            </select>
-            <label>Temperatura apei:</label>
-            <input type="range" id="calc-temp" min="4" max="30" value="15" oninput="updateTempLabel(this.value)">
-            <p>Temperatură: <span id="temp-val">15</span>°C</p>
-            <button class="action-btn" onclick="calculateBait()">Generează Rețetă</button>
-            <div id="calc-result" class="info-block" style="margin-top:10px; display:none;"></div>
-        </section>
-    </div>
-    <script src="./script.js"></script>
-</body>
-</html>
-
-
-
-<!--
-<!DOCTYPE html>
-<html lang="ro" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact | Pro</title>
-    <link rel="stylesheet" href="./style.css">
-</head>
-<body>
-    <div class="bg-overlay"></div>
-    <div class="content-wrapper">
-        <header>
-            <div class="header-left">
-                <button id="btn-home" onclick="resetApp()" title="Reset / Home">🏠</button>
-                <select id="lang-select">
-                    <option value="ro">RO</option>
-                    <option value="en">EN</option>
-                </select>
-            </div>
-            <div class="logo-text">PESCUIT EXACT</div>
-            <select id="theme-select">
-                <option value="dark">Midnight</option>
-                <option value="solar">Solar</option>
-                <option value="camo">Camo</option>
-            </select>
-        </header>
-
-        <section class="hero">
-            <div class="score-display">
-                <div id="main-score">--%</div>
-                <p id="status-text">Selectează destinația</p>
-            </div>
-        </section>
-
-        <nav class="main-nav">
-            <button onclick="updateData('river')">🌊 DUNĂRE</button>
-            <button onclick="updateData('lake')">🎣 BĂLȚI & LACURI</button>
+            <button onclick="updateData('lake')">🎣 BĂLȚI</button>
+            <button onclick="showCalculator()">🧮 CALC</button>
         </nav>
 
         <section id="details-section" class="hidden">
@@ -127,115 +36,37 @@
                 <input type="text" id="lake-search" placeholder="Caută județ sau nume..." onkeyup="filterLakes()">
             </div>
 
-            <div class="data-row">
-                <div class="info-card">
-                    <h4 id="h-meteo">Meteo & Presiune</h4>
-                    <p id="d-presiune">--</p>
-                    <p id="d-vant">--</p>
+            <div class="pro-card">
+                <div class="card-header">
+                    <h2 id="loc-name">Selectează Locația</h2>
+                    <div id="loc-rating" class="stars"></div>
                 </div>
-                <div class="info-card">
-                    <h4 id="h-apa">Detalii Locație</h4>
-                    <p id="d-cota">--</p>
-                    <p id="d-claritate">--</p>
+                <div class="data-grid">
+                    <div class="data-item">Taxă: <b id="loc-taxa">--</b></div>
+                    <div class="data-item">Județ: <b id="loc-judet">--</b></div>
                 </div>
-            </div>
-            
-            <div class="full-card">
-                <h4 id="h-strat">Strategie / Regulament</h4>
-                <p id="d-strat">Selectează o opțiune.</p>
+                <div class="info-block">
+                    <p id="loc-reguli">Selectează o opțiune din listă.</p>
+                </div>
             </div>
 
             <div class="table-view">
-                <h4 id="h-prog">Informații Live</h4>
-                <div class="table-scroll">
-                    <table id="main-table"></table>
-                </div>
+                <table id="main-table"></table>
             </div>
+        </section>
+
+        <section id="calc-section" class="hidden pro-card">
+            <h3>🧮 Calculator Momeli</h3>
+            <select id="calc-fish">
+                <option value="crap">Crap</option>
+                <option value="caras">Caras / Plătică</option>
+            </select>
+            <p>Temperatură apă: <span id="temp-val">15</span>°C</p>
+            <input type="range" id="calc-temp" min="4" max="30" value="15" oninput="updateTempLabel(this.value)">
+            <button class="action-btn" onclick="calculateBait()">Generează Rețetă</button>
+            <div id="calc-result" class="info-block" style="margin-top:15px; display:none;"></div>
         </section>
     </div>
     <script src="./script.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-<!--
-<!DOCTYPE html>
-<html lang="ro" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact | Pro</title>
-    <link rel="stylesheet" href="./style.css">
-</head>
-<body>
-    <div class="bg-overlay"></div>
-    <div class="content-wrapper">
-        <header>
-            <select id="lang-select">
-                <option value="ro">RO</option>
-                <option value="en">EN</option>
-            </select>
-            <div class="logo-text">PESCUIT EXACT</div>
-            <select id="theme-select">
-                <option value="dark">Midnight</option>
-                <option value="solar">Solar</option>
-                <option value="camo">Camo</option>
-            </select>
-        </header>
-
-        <section class="hero">
-            <div class="score-display">
-                <div id="main-score">--%</div>
-                <p id="status-text">Selectează destinația</p>
-            </div>
-        </section>
-
-        <nav class="main-nav">
-            <button onclick="updateData('river')">🌊 DUNĂRE</button>
-            <button onclick="updateData('lake')">🎣 BĂLȚI & LACURI</button>
-        </nav>
-
-        <section id="details-section" class="hidden">
-            
--->
-
-<!-- Filtru Căutare (Apare doar la Bălți) -->
-          <!--  <div id="search-container" class="hidden">
-                <input type="text" id="lake-search" placeholder="Caută județ (ex: Cluj, Iași)..." onkeyup="filterLakes()">
-            </div>
-
-            <div class="data-row">
-                <div class="info-card">
-                    <h4 id="h-meteo">Meteo & Presiune</h4>
-                    <p id="d-presiune">--</p>
-                    <p id="d-vant">--</p>
-                </div>
-                <div class="info-card">
-                    <h4 id="h-apa">Detalii Locație</h4>
-                    <p id="d-cota">--</p>
-                    <p id="d-claritate">--</p>
-                </div>
-            </div>
-            
-            <div class="full-card">
-                <h4 id="h-strat">Strategie / Regulament</h4>
-                <p id="d-strat">Selectează o opțiune.</p>
-            </div>
-
-            <div class="table-view">
-                <h4 id="h-prog">Informații Live</h4>
-                <div class="table-scroll">
-                    <table id="main-table"></table>
-                </div>
-            </div>
-        </section>
-    </div>
-    <script src="./script.js"></script>
-</body>
-</html>
-
--->
