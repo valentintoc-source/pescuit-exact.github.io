@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pescuit Exact | Fishing Forecast</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Corecție: punct în față pentru GitHub -->
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <header>
@@ -24,15 +25,13 @@
     <main id="app-content">
         <h1 id="title">Pescuit Exact</h1>
         
-        <!-- Scorul de Activitate -->
         <div class="score-container">
             <div class="score-circle">
-                <span id="score-value">85%</span>
+                <span id="score-value">--%</span>
             </div>
-            <p id="score-text">Șanse mari de captură!</p>
+            <p id="score-text">Selectează un loc de pescuit</p>
         </div>
 
-        <!-- Sectiune Selectie Locatie -->
         <div class="selection-cards">
             <button class="card" onclick="selectType('river')">
                 <span class="icon">🌊</span>
@@ -44,12 +43,14 @@
             </button>
         </div>
 
-        <div id="hydro-data" class="info-box hidden">
-            <h3>Cota Dunării (Giurgiu): <span id="river-level">+2cm</span></h3>
-            <p id="river-status">Apă stabilă - Ideal pentru feeder.</p>
+        <!-- Caseta cu date hidrologice -->
+        <div id="hydro-data" style="display: none; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+            <h3>Cota Giurgiu: <span id="river-level">+2cm</span></h3>
+            <p id="river-status">Se încarcă datele...</p>
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <!-- Corecție: punct în față pentru GitHub -->
+    <script src="./script.js"></script>
 </body>
 </html>
