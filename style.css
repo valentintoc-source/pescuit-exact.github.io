@@ -1,3 +1,40 @@
+/* Asigură-te că aceste reguli sunt la începutul fișierului style.css */
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+}
+
+body {
+    background-color: var(--bg-color) !important; /* !important forțează schimbarea */
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 20px;
+    display: block;
+}
+
+/* Verifică să ai culorile definite corect */
+:root {
+    --bg-color: #0b0e14;
+    --text-color: #ffffff;
+    --accent-color: #00ff88;
+}
+
+[data-theme="solar"] {
+    --bg-color: #f4f4f4;
+    --text-color: #1a1a1a;
+    --accent-color: #ff8800;
+}
+
+[data-theme="camo"] {
+    --bg-color: #353a1c;
+    --text-color: #f0e68c;
+    --accent-color: #8b4513;
+}
+
+
 const translations = {
     ro: { title: "Pescuit Exact", dunare: "DUNĂRE", balti: "BĂLȚI", select: "Selectează un loc", river_ok: "Apă stabilă - Ideal feeder", lake_ok: "Presiune perfectă!" },
     en: { title: "Exact Fishing", dunare: "DANUBE", balti: "LAKES", select: "Select a location", river_ok: "Stable water - Ideal feeder", lake_ok: "Perfect pressure!" }
