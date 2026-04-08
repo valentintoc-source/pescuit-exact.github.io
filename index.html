@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact | Fishing Forecast</title>
-    <!-- Corecție: punct în față pentru GitHub -->
+    <title>Pescuit Exact | Pro Dashboard</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+    <div class="overlay"></div> <!-- Pentru textura de fundal -->
+    
     <header>
         <div class="top-bar">
             <select id="lang-select">
-                <option value="ro">🇷🇴 Română</option>
-                <option value="en">🇬🇧 English</option>
+                <option value="ro">🇷🇴 RO</option>
+                <option value="en">🇬🇧 EN</option>
             </select>
+            <div class="logo">PESCUIT EXACT</div>
             <select id="theme-select">
                 <option value="dark">🌑 Midnight</option>
                 <option value="solar">☀️ Solar</option>
@@ -22,35 +24,55 @@
         </div>
     </header>
 
-    <main id="app-content">
-        <h1 id="title">Pescuit Exact</h1>
-        
-        <div class="score-container">
+    <main>
+        <div class="main-score">
             <div class="score-circle">
                 <span id="score-value">--%</span>
             </div>
-            <p id="score-text">Selectează un loc de pescuit</p>
+            <h2 id="score-text">Selectează Locația</h2>
         </div>
 
         <div class="selection-cards">
-            <button class="card" onclick="selectType('river')">
-                <span class="icon">🌊</span>
-                <span id="btn-dunare">DUNĂRE</span>
-            </button>
-            <button class="card" onclick="selectType('lake')">
-                <span class="icon">🎣</span>
-                <span id="btn-balti">BĂLȚI / LACURI</span>
-            </button>
+            <button class="card" onclick="selectType('river')">🌊 DUNĂRE</button>
+            <button class="card" onclick="selectType('lake')">🎣 BĂLȚI / LACURI</button>
         </div>
 
-        <!-- Caseta cu date hidrologice -->
-        <div id="hydro-data" style="display: none; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
-            <h3>Cota Giurgiu: <span id="river-level">+2cm</span></h3>
-            <p id="river-status">Se încarcă datele...</p>
+        <!-- ZONA DE DATE COMPLEXE -->
+        <div id="data-container" style="display: none;">
+            <div class="data-grid">
+                <div class="data-card">
+                    <h4 id="label-meteo">METEO & PRESIUNE</h4>
+                    <p id="val-presiune">1012 hPa (Stabil)</p>
+                    <p id="val-vant">Vânt: 12 km/h (S-V)</p>
+                </div>
+                <div class="data-card">
+                    <h4 id="label-solunar">SOLUNAR</h4>
+                    <p>Major: 14:20 - 16:20</p>
+                    <p>Minor: 08:10 - 09:10</p>
+                </div>
+            </div>
+
+            <div class="recommendation-box">
+                <h3 id="label-strategie">Strategie Recomandată</h3>
+                <p id="val-strategie">--</p>
+            </div>
+
+            <div class="table-container">
+                <h3 id="label-prognoza">Prognoză pe Ore (8 Aprilie 2026)</h3>
+                <table id="forecast-table">
+                    <thead>
+                        <tr><th>Ora</th><th>Activitate</th><th>Momeală</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>12:00</td><td>65%</td><td>Viermuși</td></tr>
+                        <tr><td>15:00</td><td>85%</td><td>Wafters</td></tr>
+                        <tr><td>18:00</td><td>70%</td><td>Porumb</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 
-    <!-- Corecție: punct în față pentru GitHub -->
     <script src="./script.js"></script>
 </body>
 </html>
