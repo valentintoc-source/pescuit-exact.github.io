@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact PRO | Algoritm Balistic 2026</title>
+    <title>Pescuit Exact PRO | Predictor Național</title>
     <style>
         :root { --acc: #00ff88; --bg: #0b0e14; --text: #fff; --warn: #ffcc00; --danger: #ff4444; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; text-align: center; }
@@ -13,11 +13,10 @@
         .nav-btn { flex: 1; padding: 15px; border: 2px solid var(--acc); background: rgba(0,255,136,0.1); color: #fff; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
         .card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; border-top: 4px solid var(--acc); text-align: left; margin-bottom: 20px; display: none; }
         .table-wrapper { overflow-x: auto; background: rgba(0,0,0,0.3); border-radius: 8px; }
-        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th { background: var(--acc); color: #000; padding: 10px; text-align: left; font-size: 0.65rem; text-transform: uppercase; }
         td { padding: 12px 10px; border-bottom: 1px solid #333; text-align: left; font-size: 0.85rem; }
-        .val-p { color: #44aaff; font-weight: bold; }
-        .chance-high { color: var(--acc); font-weight: bold; text-shadow: 0 0 5px #00ff88; }
+        .chance-high { color: var(--acc); font-weight: bold; }
         .chance-med { color: var(--warn); }
         .chance-low { color: var(--danger); }
         input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 8px; border: 2px solid var(--acc); background: #1a1a1a; color: #fff; box-sizing: border-box; }
@@ -35,116 +34,98 @@
         <button class="nav-btn" onclick="scena('lake')">🎣 ȘANSE BĂLȚI</button>
     </div>
 
-    <!-- SECTIUNE DUNARE CU PRESIUNE ATMOSFERICA -->
+    <!-- SECTIUNE DUNARE -->
     <div id="zona-dunare" class="card">
-        <h3 style="color:var(--acc); margin-top:0;">Predictor Avansat (Meteo + Hidro)</h3>
-        <p style="font-size:0.75rem; color:var(--warn); margin-bottom:10px;">*Scorul include: Temperatură (40%), Presiune (30%), Tendință Cotă (30%).</p>
+        <h3 style="color:var(--acc); margin-top:0; text-align:center;">Analiză Curs Dunăre</h3>
         <div class="table-wrapper">
             <table>
                 <thead>
-                    <tr><th>Stație</th><th>Km</th><th>Cotă</th><th>Temp.</th><th>Presiune</th><th>Tend.</th><th>ACTIVITATE</th></tr>
+                    <tr><th>Stație</th><th>Cotă</th><th>Temp.</th><th>Presiune</th><th>ȘANSE</th></tr>
                 </thead>
-                <tbody id="river-body">
-                    <!-- Dinamic -->
-                </tbody>
+                <tbody id="river-body"></tbody>
             </table>
         </div>
     </div>
 
     <!-- SECTIUNE BALTI -->
     <div id="zona-balti" style="display:none;">
-        <input type="text" id="find" placeholder="Caută Județ (ex: Ilfov, Giurgiu)..." oninput="doSearch()">
+        <input type="text" id="find" placeholder="Caută Județ..." oninput="doSearch()">
         <div id="info-card" class="card">
             <h2 id="d-nume" style="margin:0; color:var(--acc);"></h2>
             <div id="chance-indicator" style="margin: 10px 0; font-size: 1.2rem;"></div>
             <p id="d-meta"></p>
             <div style="background:#000; padding:15px; border-radius:10px; border-left: 4px solid var(--acc);">
-                <h4 style="margin:0 0 5px 0; font-size:0.8rem; color:var(--acc)">ANALIZĂ METEO-TACTICĂ:</h4>
+                <h4 style="margin:0 0 5px 0; font-size:0.8rem; color:var(--acc)">STRATEGIE:</h4>
                 <p id="d-reguli" style="margin:0; font-size:0.9rem; line-height:1.4;"></p>
             </div>
         </div>
         <div class="table-wrapper">
             <table>
-                <thead><tr><th>Nume</th><th>Județ</th><th>Taxă</th></tr></thead>
-                <tbody id="lista"></tbody>
+                <thead><tr><th>Locație</th><th>Județ</th><th>Temp.</th><th>Presiune</th><th>ȘANSE</th></tr></thead>
+                <tbody id="lista-balti"></tbody>
             </table>
         </div>
     </div>
 
     <script>
         const riverData = [
-            {n: "Baziaș", km: 1075, cota: "+12", t: 12.4, p: 1008, tend: "up"},
-            {n: "Tr. Severin", km: 931, cota: "+45", t: 11.5, p: 1009, tend: "up"},
-            {n: "Calafat", km: 795, cota: "+18", t: 11.2, p: 1010, tend: "up"},
-            {n: "Bechet", km: 679, cota: "+5", t: 11.1, p: 1011, tend: "stable"},
-            {n: "Giurgiu", km: 493, cota: "+2", t: 10.7, p: 1012, tend: "stable"},
-            {n: "Călărași", km: 370, cota: "+1", t: 10.5, p: 1012, tend: "stable"},
-            {n: "Brăila", km: 170, cota: "-2", t: 10.1, p: 1013, tend: "down"},
-            {n: "Tulcea", km: 71, cota: "-4", t: 9.7, p: 1014, tend: "down"}
+            {n: "Baziaș", c: "+12", t: 12.4, p: 1008, tend: "up"},
+            {n: "Tr. Severin", c: "+45", t: 11.5, p: 1009, tend: "up"},
+            {n: "Giurgiu", c: "+2", t: 10.7, p: 1012, tend: "stable"},
+            {n: "Tulcea", c: "-4", t: 9.7, p: 1014, tend: "down"}
         ];
 
         const baltiDB = [
-            {n: "Hermes Periș", j: "Ilfov", t: "150 RON", temp: 11, p: 1011, r: "Presiune stabilă. Peștele se hrănește constant. Folosește momeli vizibile."},
-            {n: "Bila 2", j: "Giurgiu", t: "100 RON", temp: 12.5, p: 1009, r: "Presiune scăzută! Șanse mari de captură la crap. Mergi pe arome tari."},
-            {n: "Chiroiu 4", j: "Ialomița", t: "100 RON", temp: 12.2, p: 1015, r: "Presiune în creștere. Peștele tinde să urce între ape. Încearcă Zig-Rig."},
-            {n: "Fântânele", j: "Dolj", t: "100 RON", temp: 13, p: 1010, r: "Condiții meteo ideale. Pescuit activ la feeder."}
+            {n: "Hermes Periș", j: "Ilfov", t: 11.2, p: 1011, r: "C&R Sportiv. Nadă fină."},
+            {n: "Bila 2", j: "Giurgiu", t: 12.5, p: 1009, r: "Șanse mari de captură la crap."},
+            {n: "Chiroiu 4", j: "Ialomița", t: 12.2, p: 1015, r: "Peștele e letargic. Încearcă arome tari."},
+            {n: "Fântânele", j: "Dolj", t: 13.1, p: 1010, r: "Condiții ideale pentru weekend."},
+            {n: "Suhaia", j: "Teleorman", t: 10.5, p: 1012, r: "Apa încă rece. Pescuit fin."}
         ];
 
-        function calculateAdvancedScore(temp, pres, tend) {
-            let score = 0;
-            // Temperatura (max 40)
-            score += (temp > 12) ? 40 : (temp > 10 ? 25 : 10);
-            // Presiune (max 30) - Ideal intre 1008 si 1012
-            score += (pres >= 1008 && pres <= 1012) ? 30 : (pres < 1008 ? 20 : 5);
-            // Tendinta (max 30)
-            score += (tend === "stable") ? 30 : (tend === "down" ? 20 : 5);
-            return score;
+        function getChance(t, p, tend) {
+            let s = 0;
+            s += (t > 12) ? 40 : (t > 10 ? 25 : 10);
+            s += (p >= 1008 && p <= 1012) ? 30 : 10;
+            s += (tend === "stable") ? 30 : 15;
+            return s;
+        }
+
+        function getStyle(s) {
+            return s > 75 ? "chance-high" : (s > 50 ? "chance-med" : "chance-low");
         }
 
         function scena(id) {
             document.getElementById('zona-balti').style.display = (id === 'lake' ? 'block' : 'none');
             document.getElementById('zona-dunare').style.display = (id === 'river' ? 'block' : 'none');
-            if(id === 'river') renderRiver();
-            if(id === 'lake') updateL(baltiDB);
+            if(id === 'river') {
+                document.getElementById('river-body').innerHTML = riverData.map(d => {
+                    let s = getChance(d.t, d.p, d.tend);
+                    return `<tr><td><b>${d.n}</b></td><td>${d.c}</td><td>${d.t}°C</td><td>${d.p}</td><td class="${getStyle(s)}">${s}%</td></tr>`;
+                }).join('');
+            }
+            if(id === 'lake') renderLakes(baltiDB);
         }
 
-        function renderRiver() {
-            const body = document.getElementById('river-body');
-            body.innerHTML = riverData.map(d => {
-                const score = calculateAdvancedScore(d.t, d.p, d.tend);
-                let cls = score > 75 ? "chance-high" : (score > 50 ? "chance-med" : "chance-low");
-                let tIco = d.tend === "up" ? "↗" : (d.tend === "down" ? "↘" : "→");
-                return `<tr>
-                    <td><b>${d.n}</b></td><td>${d.km}</td><td>${d.cota}</td>
-                    <td style="color:#ffcc00">${d.t}°C</td>
-                    <td class="val-p">${d.p} hPa</td>
-                    <td>${tIco}</td>
-                    <td class="${cls}">${score}%</td>
-                </tr>`;
+        function renderLakes(data) {
+            document.getElementById('lista-balti').innerHTML = data.map(b => {
+                let s = getChance(b.t, b.p, "stable");
+                return `<tr onclick="detalii('${b.n}')"><td><b>${b.n}</b></td><td>${b.j}</td><td>${b.t}°C</td><td>${b.p}</td><td class="${getStyle(s)}">${s}%</td></tr>`;
             }).join('');
-        }
-
-        function updateL(data) {
-            document.getElementById('lista').innerHTML = data.map(b => `
-                <tr onclick="detalii('${b.n}')">
-                    <td><b>${b.n}</b></td><td>${b.j}</td><td>${b.t}</td>
-                </tr>`).join('');
         }
 
         function doSearch() {
             const v = document.getElementById('find').value.toLowerCase();
-            updateL(baltiDB.filter(b => b.j.toLowerCase().includes(v) || b.n.toLowerCase().includes(v)));
+            renderLakes(baltiDB.filter(b => b.j.toLowerCase().includes(v) || b.n.toLowerCase().includes(v)));
         }
 
         function detalii(nume) {
             const b = baltiDB.find(x => x.n === nume);
-            const score = calculateAdvancedScore(b.temp, b.p, "stable");
-            const card = document.getElementById('info-card');
-            card.style.display = 'block';
-            let cls = score > 75 ? "chance-high" : (score > 50 ? "chance-med" : "chance-low");
+            const s = getChance(b.t, b.p, "stable");
+            document.getElementById('info-card').style.display = 'block';
             document.getElementById('d-nume').innerText = b.n;
-            document.getElementById('chance-indicator').innerHTML = `Scor Activitate: <span class="${cls}">${score}%</span>`;
-            document.getElementById('d-meta').innerHTML = `📍 Județ: ${b.j} | 💰 Taxă: ${b.t}<br>🌡️ Temp: ${b.temp}°C | ⏲️ Presiune: ${b.p} hPa`;
+            document.getElementById('chance-indicator').innerHTML = `Șanse: <span class="${getStyle(s)}">${s}%</span>`;
+            document.getElementById('d-meta').innerHTML = `📍 ${b.j} | 🌡️ ${b.t}°C | ⏲️ ${b.p} hPa`;
             document.getElementById('d-reguli').innerText = b.r;
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
