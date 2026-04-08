@@ -1,40 +1,24 @@
-:root {
-    --text: #fff; --acc: #00ff88;
-    --bg-img: url('https://transparenttextures.com');
-}
-[data-theme="solar"] {
-    --text: #111; --acc: #ff6600;
-    --bg-img: url('https://transparenttextures.com');
-}
-[data-theme="camo"] {
-    --text: #f0e68c; --acc: #8b4513;
-    --bg-img: url('https://transparenttextures.com');
-}
+:root { --text: #fff; --acc: #00ff88; --bg-img: url('https://transparenttextures.com'); --bg-color: #0b0e14; }
+[data-theme="solar"] { --text: #111; --acc: #ff6600; --bg-img: url('https://transparenttextures.com'); --bg-color: #f0f0f0; }
+[data-theme="camo"] { --text: #f0e68c; --acc: #a2ad91; --bg-img: url('https://transparenttextures.com'); --bg-color: #2e331a; }
 
-body, html { margin: 0; padding: 0; min-height: 100vh; font-family: sans-serif; overflow-x: hidden; }
+body, html { margin: 0; padding: 0; min-height: 100vh; font-family: sans-serif; }
+.bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: var(--bg-img); background-color: var(--bg-color); z-index: -1; transition: 0.5s; }
+.content-wrapper { padding: 15px; color: var(--text); text-align: center; max-width: 600px; margin: auto; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.logo-text { font-weight: bold; color: var(--acc); }
 
-/* Fundalul care ocupă tot ecranul */
-.bg-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-image: var(--bg-img);
-    background-color: #0b0e14; /* Fundal de rezervă */
-    z-index: -1; transition: 0.5s;
-}
+#main-score { font-size: 3.5rem; font-weight: bold; color: var(--acc); text-shadow: 0 0 10px rgba(0,0,0,0.5); }
+.main-nav { display: flex; gap: 8px; margin-bottom: 15px; }
+.main-nav button { flex: 1; padding: 12px; border: 2px solid var(--acc); background: rgba(0,0,0,0.3); color: var(--text); border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-[data-theme="solar"] .bg-overlay { background-color: #f0f0f0; }
-[data-theme="camo"] .bg-overlay { background-color: #2e331a; }
-
-.content-wrapper { padding: 20px; color: var(--text); text-align: center; }
-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
-
-#main-score { font-size: 4rem; font-weight: bold; color: var(--acc); text-shadow: 0 0 15px var(--acc); }
-.main-nav { display: flex; gap: 10px; margin: 20px 0; }
-.main-nav button { flex: 1; padding: 15px; border: 2px solid var(--acc); background: none; color: var(--text); border-radius: 10px; font-weight: bold; cursor: pointer; }
+#search-container { margin-bottom: 15px; }
+#lake-search { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid var(--acc); background: rgba(255,255,255,0.1); color: var(--text); box-sizing: border-box; }
 
 .hidden { display: none; }
-.data-row { display: flex; gap: 10px; margin-bottom: 10px; }
-.info-card, .full-card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; flex: 1; border-left: 4px solid var(--acc); text-align: left; }
-.table-view { background: rgba(0,0,0,0.2); margin-top: 15px; border-radius: 10px; padding: 10px; }
-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-th { color: var(--acc); border-bottom: 1px solid var(--acc); padding: 8px; }
-td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.data-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.info-card, .full-card { background: rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; flex: 1; border-left: 4px solid var(--acc); text-align: left; }
+.table-view { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 5px; margin-top: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th { text-align: left; color: var(--acc); border-bottom: 1px solid var(--acc); padding: 8px; }
+td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
