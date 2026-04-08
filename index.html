@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact PRO | Predictor Național</title>
+    <title>Pescuit Exact PRO | Baza de Date Națională</title>
     <style>
         :root { --acc: #00ff88; --bg: #0b0e14; --text: #fff; --warn: #ffcc00; --danger: #ff4444; }
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; text-align: center; }
@@ -12,9 +12,9 @@
         .nav { display: flex; gap: 10px; margin-bottom: 20px; }
         .nav-btn { flex: 1; padding: 15px; border: 2px solid var(--acc); background: rgba(0,255,136,0.1); color: #fff; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
         .card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; border-top: 4px solid var(--acc); text-align: left; margin-bottom: 20px; display: none; }
-        .table-wrapper { overflow-x: auto; background: rgba(0,0,0,0.3); border-radius: 8px; }
+        .table-wrapper { overflow-x: auto; background: rgba(0,0,0,0.3); border-radius: 8px; max-height: 500px; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: var(--acc); color: #000; padding: 10px; text-align: left; font-size: 0.65rem; text-transform: uppercase; }
+        th { background: var(--acc); color: #000; padding: 10px; text-align: left; font-size: 0.65rem; text-transform: uppercase; position: sticky; top: 0; }
         td { padding: 12px 10px; border-bottom: 1px solid #333; text-align: left; font-size: 0.85rem; }
         .chance-high { color: var(--acc); font-weight: bold; }
         .chance-med { color: var(--warn); }
@@ -30,18 +30,16 @@
     </header>
     
     <div class="nav">
-        <button class="nav-btn" onclick="scena('river')">🌊 ȘANSE DUNĂRE</button>
-        <button class="nav-btn" onclick="scena('lake')">🎣 ȘANSE BĂLȚI</button>
+        <button class="nav-btn" onclick="scena('river')">🌊 COTE DUNĂRE</button>
+        <button class="nav-btn" onclick="scena('lake')">🎣 LISTA COMPLETĂ BĂLȚI</button>
     </div>
 
     <!-- SECTIUNE DUNARE -->
     <div id="zona-dunare" class="card">
-        <h3 style="color:var(--acc); margin-top:0; text-align:center;">Analiză Curs Dunăre</h3>
+        <h3 style="color:var(--acc); margin-top:0; text-align:center;">Monitorizare Curs Dunăre (Amonte-Aval)</h3>
         <div class="table-wrapper">
             <table>
-                <thead>
-                    <tr><th>Stație</th><th>Cotă</th><th>Temp.</th><th>Presiune</th><th>ȘANSE</th></tr>
-                </thead>
+                <thead><tr><th>Stație</th><th>Cotă</th><th>Temp.</th><th>Presiune</th><th>ȘANSE</th></tr></thead>
                 <tbody id="river-body"></tbody>
             </table>
         </div>
@@ -49,19 +47,19 @@
 
     <!-- SECTIUNE BALTI -->
     <div id="zona-balti" style="display:none;">
-        <input type="text" id="find" placeholder="Caută Județ..." oninput="doSearch()">
+        <input type="text" id="find" placeholder="Caută JUDEȚ (ex: Giurgiu, Tulcea, Ilfov)..." oninput="doSearch()">
         <div id="info-card" class="card">
             <h2 id="d-nume" style="margin:0; color:var(--acc);"></h2>
-            <div id="chance-indicator" style="margin: 10px 0; font-size: 1.2rem;"></div>
+            <div id="chance-indicator" style="margin: 10px 0; font-size: 1.1rem;"></div>
             <p id="d-meta"></p>
             <div style="background:#000; padding:15px; border-radius:10px; border-left: 4px solid var(--acc);">
-                <h4 style="margin:0 0 5px 0; font-size:0.8rem; color:var(--acc)">STRATEGIE:</h4>
+                <h4 style="margin:0 0 5px 0; font-size:0.8rem; color:var(--acc)">REGULAMENT & TAXE:</h4>
                 <p id="d-reguli" style="margin:0; font-size:0.9rem; line-height:1.4;"></p>
             </div>
         </div>
         <div class="table-wrapper">
             <table>
-                <thead><tr><th>Locație</th><th>Județ</th><th>Temp.</th><th>Presiune</th><th>ȘANSE</th></tr></thead>
+                <thead><tr><th>Nume Baltă</th><th>Județ</th><th>Temp.</th><th>Presiune</th><th>ȘANSE</th></tr></thead>
                 <tbody id="lista-balti"></tbody>
             </table>
         </div>
@@ -71,16 +69,56 @@
         const riverData = [
             {n: "Baziaș", c: "+12", t: 12.4, p: 1008, tend: "up"},
             {n: "Tr. Severin", c: "+45", t: 11.5, p: 1009, tend: "up"},
+            {n: "Calafat", c: "+18", t: 11.2, p: 1010, tend: "up"},
+            {n: "Bechet", c: "+5", t: 11.1, p: 1011, tend: "stable"},
             {n: "Giurgiu", c: "+2", t: 10.7, p: 1012, tend: "stable"},
+            {n: "Oltenița", c: "+4", t: 10.6, p: 1012, tend: "stable"},
+            {n: "Călărași", c: "+1", t: 10.5, p: 1012, tend: "stable"},
+            {n: "Brăila", c: "-2", t: 10.1, p: 1013, tend: "down"},
+            {n: "Galați", c: "-3", t: 9.9, p: 1013, tend: "down"},
             {n: "Tulcea", c: "-4", t: 9.7, p: 1014, tend: "down"}
         ];
 
         const baltiDB = [
-            {n: "Hermes Periș", j: "Ilfov", t: 11.2, p: 1011, r: "C&R Sportiv. Nadă fină."},
-            {n: "Bila 2", j: "Giurgiu", t: 12.5, p: 1009, r: "Șanse mari de captură la crap."},
-            {n: "Chiroiu 4", j: "Ialomița", t: 12.2, p: 1015, r: "Peștele e letargic. Încearcă arome tari."},
-            {n: "Fântânele", j: "Dolj", t: 13.1, p: 1010, r: "Condiții ideale pentru weekend."},
-            {n: "Suhaia", j: "Teleorman", t: 10.5, p: 1012, r: "Apa încă rece. Pescuit fin."}
+            // ILFOV
+            {n: "Hermes Periș", j: "Ilfov", t: 11.2, p: 1011, r: "C&R exclusiv. Doar fir de păr. Saltea cadă obligatorie."},
+            {n: "Moara Vlăsiei 2", j: "Ilfov", t: 11.5, p: 1011, r: "Fără momeală vie. Standuri dotate cu curent."},
+            {n: "Săftica", j: "Ilfov", t: 11.8, p: 1011, r: "Crap, caras, amur. Taxă: 100 RON."},
+            {n: "Tâncăbești", j: "Ilfov", t: 11.3, p: 1011, r: "Crap de talie mare. Regim sportiv."},
+            // GIURGIU
+            {n: "Bila 2", j: "Giurgiu", t: 12.5, p: 1009, r: "Reținere caras permisă. Taxă: 100 RON."},
+            {n: "Facău", j: "Giurgiu", t: 12.2, p: 1009, r: "Crap și caras. Permis plantat."},
+            {n: "Naipu", j: "Giurgiu", t: 12.0, p: 1009, r: "Taxă: 60 RON. Pescuit la feeder."},
+            {n: "Hobaia", j: "Giurgiu", t: 12.1, p: 1009, r: "Pescuit competițional. C&R crap."},
+            // CALARASI
+            {n: "Dorobanțu", j: "Călărași", t: 11.5, p: 1012, r: "Reținere 5kg. Taxă: 100 RON."},
+            {n: "Gurbănești", j: "Călărași", t: 11.7, p: 1012, r: "Crap de record. C&R obligatoriu."},
+            {n: "Sărulești", j: "Călărași", t: 11.4, p: 1012, r: "Recorduri mondiale. Taxă: 200 RON+."},
+            {n: "Fundulea 2", j: "Călărași", t: 11.6, p: 1012, r: "Crap și caras. Acces facil din autostradă."},
+            // IALOMITA
+            {n: "Chiroiu 4", j: "Ialomița", t: 12.2, p: 1015, r: "Fără mămăligă. Crap mare eliberat."},
+            {n: "Dridu Baraj", j: "Ialomița", t: 12.0, p: 1015, r: "Permis ANPA. Atenție la prohibiție."},
+            {n: "Vlădeni", j: "Ialomița", t: 12.3, p: 1015, r: "Taxă: 70 RON. Reținere 5kg."},
+            // TELEORMAN
+            {n: "Suhaia", j: "Teleorman", t: 10.5, p: 1012, r: "Crap sălbatic. Lac foarte mare."},
+            {n: "Lăceni", j: "Teleorman", t: 10.7, p: 1012, r: "Taxă: 50 RON. Pescuit la feeder."},
+            {n: "Vârtoape", j: "Teleorman", t: 10.6, p: 1012, r: "Crap românesc și caras."},
+            // TULCEA
+            {n: "Enisala", j: "Tulcea", t: 9.7, p: 1014, r: "Caras mare lângă cetate. Taxă: 80 RON."},
+            {n: "Dunavăț", j: "Tulcea", t: 9.5, p: 1014, r: "Acces Deltă. Permis ARBDD obligatoriu."},
+            {n: "Murighiol", j: "Tulcea", t: 9.6, p: 1014, r: "Crap sălbatic și somn. Pescuit pe canale."},
+            // DOLJ
+            {n: "Fântânele", j: "Dolj", t: 13.1, p: 1010, r: "Camping permis. Taxă: 100 RON."},
+            {n: "Bistreț", j: "Dolj", t: 12.8, p: 1010, r: "Lac natural mare. Caras și crap."},
+            {n: "Cornu", j: "Dolj", t: 12.9, p: 1010, r: "Taxă: 60 RON. Pescuit la feeder."},
+            // ARGES
+            {n: "Budeasa", j: "Argeș", t: 11.2, p: 1011, r: "Pescuit pe baraj. Crap și Șalău."},
+            {n: "Bascov", j: "Argeș", t: 11.4, p: 1011, r: "Taxă: 60 RON. Pescuit sportiv."},
+            {n: "Golești", j: "Argeș", t: 11.1, p: 1011, r: "Permis ANPA. Pescuit la somn."},
+            // OLT
+            {n: "Zăvideni", j: "Olt", t: 11.5, p: 1012, r: "Baraj Olt. Crap mare și Somn."},
+            {n: "Ipotești", j: "Olt", t: 11.3, p: 1012, r: "Taxă: 80 RON. Crap sălbatic."},
+            {n: "Slătioara", j: "Olt", t: 11.4, p: 1012, r: "Taxă: 60 RON. Pescuit la feeder."}
         ];
 
         function getChance(t, p, tend) {
@@ -124,8 +162,8 @@
             const s = getChance(b.t, b.p, "stable");
             document.getElementById('info-card').style.display = 'block';
             document.getElementById('d-nume').innerText = b.n;
-            document.getElementById('chance-indicator').innerHTML = `Șanse: <span class="${getStyle(s)}">${s}%</span>`;
-            document.getElementById('d-meta').innerHTML = `📍 ${b.j} | 🌡️ ${b.t}°C | ⏲️ ${b.p} hPa`;
+            document.getElementById('chance-indicator').innerHTML = `Șanse de Captură: <span class="${getStyle(s)}">${s}%</span>`;
+            document.getElementById('d-meta').innerHTML = `📍 Județ: ${b.j} | 🌡️ Temp: ${b.t}°C | ⏲️ Presiune: ${b.p} hPa`;
             document.getElementById('d-reguli').innerText = b.r;
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
