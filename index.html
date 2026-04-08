@@ -2,107 +2,124 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>Pescuit Exact PRO | Cotele Dunării & Bălți</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pescuit Exact PRO | Monitorizare Națională</title>
     <style>
-        body { background: #0b0e14; color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto 20px; border-bottom: 2px solid #00ff88; padding-bottom: 10px; }
-        .btn-home { background: #00ff88; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .btn-nav { background: #1a1a1a; border: 2px solid #00ff88; color: white; padding: 15px; width: 45%; font-weight: bold; border-radius: 8px; cursor: pointer; margin: 5px; }
-        .card { background: #1a1a1a; border: 1px solid #00ff88; padding: 15px; margin: 20px auto; max-width: 600px; text-align: left; display: none; border-top: 5px solid #00ff88; }
-        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #00ff88; background: #000; color: white; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { text-align: left; color: #00ff88; padding: 10px; border-bottom: 1px solid #00ff88; }
-        td { padding: 12px; border-bottom: 1px solid #333; cursor: pointer; text-align: left; }
-        .status-up { color: #ff4444; } /* Crestere */
-        .status-stable { color: #00ff88; } /* Stabil */
+        :root { --acc: #00ff88; --bg: #0b0e14; --text: #fff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; text-align: center; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--acc); padding-bottom: 10px; }
+        .btn-home { background: var(--acc); border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .nav { display: flex; gap: 10px; margin-bottom: 20px; }
+        .nav-btn { flex: 1; padding: 15px; border: 2px solid var(--acc); background: rgba(0,255,136,0.1); color: #fff; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+        .card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; border-top: 4px solid var(--acc); text-align: left; margin-bottom: 20px; display: none; }
+        input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 8px; border: 2px solid var(--acc); background: #1a1a1a; color: #fff; box-sizing: border-box; }
+        .table-wrapper { overflow-x: auto; background: rgba(0,0,0,0.3); border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; min-width: 400px; }
+        th { background: var(--acc); color: #000; padding: 10px; text-align: left; font-size: 0.8rem; }
+        td { padding: 10px; border-bottom: 1px solid #333; text-align: left; font-size: 0.85rem; }
+        .up { color: #ff4444; } .down { color: #44aaff; } .stable { color: var(--acc); }
     </style>
 </head>
 <body>
-    <div class="header">
+    <header>
         <button class="btn-home" onclick="location.reload()">🏠 HOME</button>
-        <h2 style="margin:0; color:#00ff88;">PESCUIT EXACT PRO</h2>
+        <h2 style="margin:0; color:var(--acc); font-size: 1.1rem;">PESCUIT EXACT PRO</h2>
+        <div style="width:40px;"></div>
+    </header>
+    
+    <div class="nav">
+        <button class="nav-btn" onclick="scena('river')">🌊 COTE DUNĂRE</button>
+        <button class="nav-btn" onclick="scena('lake')">🎣 BĂLȚI & LACURI</button>
     </div>
 
-    <div id="meniu">
-        <button class="btn-nav" onclick="arata('dunare')">🌊 DUNĂRE (COTE)</button>
-        <button class="btn-nav" onclick="arata('balti')">🎣 BĂLȚI & LACURI</button>
-    </div>
-
-    <!-- SECTIUNE DUNARE -->
+    <!-- MONITORIZARE COMPLETA DUNARE -->
     <div id="zona-dunare" class="card">
-        <h3 style="color:#00ff88; text-align:center;">Cotele Dunării Live - 8 Aprilie 2026</h3>
-        <table>
-            <thead>
-                <tr><th>Stație</th><th>Cotă (cm)</th><th>Debit (mc/s)</th><th>Tendință</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>Baziaș</td><td>+12</td><td>6600</td><td class="status-up">↗ Creștere</td></tr>
-                <tr><td>Tr. Severin</td><td>+45</td><td>7100</td><td class="status-up">↗ Creștere</td></tr>
-                <tr><td>Giurgiu</td><td>+2</td><td>6200</td><td class="status-stable">→ Stabil</td></tr>
-                <tr><td>Călărași</td><td>+5</td><td>6150</td><td class="status-stable">→ Stabil</td></tr>
-                <tr><td>Tulcea</td><td>-4</td><td>5800</td><td>↘ Scădere</td></tr>
-            </tbody>
-        </table>
-        <p style="margin-top:15px; font-size:0.9rem; background:#000; padding:10px; border-radius:5px;">
-            ⚠️ <b>Atenție:</b> Prohibiția generală pe habitatele naturale începe mâine, <b>9 Aprilie</b>.
-        </p>
+        <h3 style="color:var(--acc); margin-top:0;">Hidrologie Dunăre (Live 08.04.2026)</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Stație</th><th>Km</th><th>Cotă</th><th>Debit</th><th>Tend.</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><b>Baziaș</b></td><td>1075</td><td>+12</td><td>6600</td><td class="up">↗</td></tr>
+                    <tr><td><b>Tr. Severin</b></td><td>931</td><td>+45</td><td>7100</td><td class="up">↗</td></tr>
+                    <tr><td><b>Calafat</b></td><td>795</td><td>+18</td><td>6800</td><td class="up">↗</td></tr>
+                    <tr><td><b>Bechet</b></td><td>679</td><td>+5</td><td>6450</td><td class="stable">→</td></tr>
+                    <tr><td><b>Corabia</b></td><td>630</td><td>+3</td><td>6400</td><td class="stable">→</td></tr>
+                    <tr><td><b>Tr. Măgurele</b></td><td>597</td><td>+2</td><td>6350</td><td class="stable">→</td></tr>
+                    <tr><td><b>Zimnicea</b></td><td>553</td><td>+2</td><td>6300</td><td class="stable">→</td></tr>
+                    <tr><td><b>Giurgiu</b></td><td>493</td><td>+2</td><td>6200</td><td class="stable">→</td></tr>
+                    <tr><td><b>Oltenița</b></td><td>430</td><td>+4</td><td>6220</td><td class="stable">→</td></tr>
+                    <tr><td><b>Călărași</b></td><td>370</td><td>+1</td><td>6150</td><td class="stable">→</td></tr>
+                    <tr><td><b>Cernavodă</b></td><td>300</td><td>+2</td><td>6100</td><td class="stable">→</td></tr>
+                    <tr><td><b>Hârșova</b></td><td>253</td><td>0</td><td>6050</td><td class="stable">→</td></tr>
+                    <tr><td><b>Brăila</b></td><td>170</td><td>-2</td><td>5950</td><td class="down">↘</td></tr>
+                    <tr><td><b>Galați</b></td><td>150</td><td>-3</td><td>5900</td><td class="down">↘</td></tr>
+                    <tr><td><b>Tulcea</b></td><td>71</td><td>-4</td><td>5800</td><td class="down">↘</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="font-size:0.8rem; margin-top:10px;">ℹ️ <i>Cotele sunt exprimate în cm față de "0" stație. Debitul în m³/s.</i></p>
     </div>
 
     <!-- SECTIUNE BALTI -->
     <div id="zona-balti" style="display:none;">
-        <input type="text" id="cauta" placeholder="Caută județ (ex: Ilfov, Giurgiu, Olt)..." onkeyup="filtreaza()">
-        <div id="detalii" class="card">
-            <h2 id="b-nume" style="color:#00ff88; margin:0;"></h2>
-            <p id="b-meta"></p>
-            <div style="background:#000; padding:15px; border-radius:8px; border-left: 3px solid #00ff88;">
-                <h4 style="margin:0 0 5px 0; font-size:0.8rem; color:#00ff88">REGULAMENT:</h4>
-                <p id="b-reguli" style="margin:0; font-size:0.9rem; line-height:1.4;"></p>
+        <input type="text" id="find" placeholder="Caută Județ (Ilfov, Giurgiu, Olt, Argeș, etc)..." oninput="doSearch()">
+        <div id="info-card" class="card">
+            <h2 id="d-nume" style="color:var(--acc); margin:0;"></h2>
+            <p id="d-meta" style="font-weight:bold; margin:10px 0;"></p>
+            <div style="background:#000; padding:12px; border-radius:8px; border-left: 3px solid var(--acc);">
+                <h4 style="margin:0 0 5px 0; font-size:0.8rem; color:var(--acc)">REGULAMENT & TAXE:</h4>
+                <p id="d-reguli" style="margin:0; font-size:0.9rem; line-height:1.4;"></p>
             </div>
         </div>
-        <table>
-            <thead><tr><th>Nume Baltă</th><th>Județ</th><th>Taxă</th></tr></thead>
-            <tbody id="tabel-body"></tbody>
-        </table>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Nume</th><th>Județ</th><th>Taxă</th></tr></thead>
+                <tbody id="lista"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-        const bazeDate = [
+        const db = [
             {n: "Hermes Periș", j: "Ilfov", t: "150 RON", r: "C&R Sportiv. Doar fir de păr. Saltea tip cadă obligatorie."},
-            {n: "Moara Vlăsiei 2", j: "Ilfov", t: "120 RON", r: "Fără momeală vie. Standuri cu curent. Rezervare prealabilă."},
-            {n: "Bila 2", j: "Giurgiu", t: "100 RON", r: "Crap >4kg eliberat. Max 4 lansete. Caras permis fără limită."},
-            {n: "Chiroiu 4", j: "Ialomița", t: "100 RON", r: "Fără mămăligă. Crapul mare se eliberează imediat."},
-            {n: "Fântânele", j: "Dolj", t: "100 RON", r: "Crap și Ten. Maluri curate, acces auto facil."},
-            {n: "Suhaia", j: "Teleorman", t: "80 RON", r: "Crap sălbatic. Atenție la vânt. Lac foarte mare."},
-            {n: "Zăvideni", j: "Olt", t: "ANPA", r: "Pescuit pe baraj. Somn și crap mare pe curent."},
-            {n: "Enisala", j: "Tulcea", t: "80 RON", r: "Caras mare și Șalău. Lângă cetate, peisaj deosebit."}
+            {n: "Moara Vlăsiei 2", j: "Ilfov", t: "120 RON", r: "Fără momeală vie. Standuri cu curent. Rezervare obligatorie."},
+            {n: "Bila 2", j: "Giurgiu", t: "100 RON", r: "Crap >4kg eliberat. Max 4 lansete. Reținere caras permisă."},
+            {n: "Chiroiu 4", j: "Ialomița", t: "100 RON", r: "Pescuit sportiv. Fără momeală vie. Crap mare se eliberează."},
+            {n: "Zăvideni", j: "Olt", t: "ANPA", r: "Somn și crap mare pe barajele Oltului."},
+            {n: "Suhaia", j: "Teleorman", t: "80 RON", r: "Crap sălbatic. Atenție la vânt puternic."},
+            {n: "Fântânele", j: "Dolj", t: "100 RON", r: "Crap și Ten. Maluri curate, camping permis."},
+            {n: "Dorobanțu", j: "Călărași", t: "100 RON", r: "Crap și Somn. Reținere în limita a 5kg pește alb."},
+            {n: "Enisala", j: "Tulcea", t: "80 RON", r: "Caras mare lângă cetate. Pescuit la intrare în Deltă."},
+            {n: "Budeasa", j: "Argeș", t: "80 RON", r: "Pescuit pe baraj. Crap, Șalău și Plătică."}
         ];
 
-        function arata(id) {
-            document.getElementById('zona-balti').style.display = (id === 'balti' ? 'block' : 'none');
-            document.getElementById('zona-dunare').style.display = (id === 'dunare' ? 'block' : 'none');
-            if(id === 'balti') genereaza(bazeDate);
+        function scena(id) {
+            document.getElementById('zona-balti').style.display = (id === 'lake' ? 'block' : 'none');
+            document.getElementById('zona-dunare').style.display = (id === 'river' ? 'block' : 'none');
+            if(id === 'lake') updateL(db);
         }
 
-        function genereaza(lista) {
-            let html = '';
-            lista.forEach(b => {
-                html += `<tr onclick="vezi('${b.n}')"><td><b>${b.n}</b></td><td>${b.j}</td><td>${b.t}</td></tr>`;
-            });
-            document.getElementById('tabel-body').innerHTML = html;
+        function updateL(data) {
+            document.getElementById('lista').innerHTML = data.map(b => `
+                <tr onclick="detalii('${b.n}')">
+                    <td><b>${b.n}</b></td><td>${b.j}</td><td>${b.t}</td>
+                </tr>`).join('');
         }
 
-        function filtreaza() {
-            let txt = document.getElementById('cauta').value.toLowerCase();
-            let rez = bazeDate.filter(b => b.j.toLowerCase().includes(txt) || b.n.toLowerCase().includes(txt));
-            genereaza(rez);
+        function doSearch() {
+            const v = document.getElementById('find').value.toLowerCase();
+            updateL(db.filter(b => b.j.toLowerCase().includes(v) || b.n.toLowerCase().includes(v)));
         }
 
-        function vezi(nume) {
-            let b = bazeDate.find(x => x.n === nume);
-            document.getElementById('detalii').style.display = 'block';
-            document.getElementById('b-nume').innerText = b.n;
-            document.getElementById('b-meta').innerHTML = `📍 Județ: ${b.j} | 💰 <b>Taxă: ${b.t}</b>`;
-            document.getElementById('b-reguli').innerText = b.r;
+        function detalii(nume) {
+            const b = db.find(x => x.n === nume);
+            const card = document.getElementById('info-card');
+            card.style.display = 'block';
+            document.getElementById('d-nume').innerText = b.n;
+            document.getElementById('d-meta').innerHTML = `📍 Județ: ${b.j} | 💰 <b>Taxă: ${b.t}</b>`;
+            document.getElementById('d-reguli').innerText = b.r;
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
     </script>
