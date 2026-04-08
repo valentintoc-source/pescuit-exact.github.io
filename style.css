@@ -1,3 +1,4 @@
+/* 
 :root { --text: #fff; --acc: #00ff88; --bg: #0b0e14; --img: url('https://transparenttextures.com'); }
 [data-theme="solar"] { --text: #111; --acc: #ff6600; --bg: #f0f0f0; --img: url('https://transparenttextures.com'); }
 [data-theme="camo"] { --text: #f0e68c; --acc: #a2ad91; --bg: #2e331a; --img: url('https://transparenttextures.com'); }
@@ -26,3 +27,4 @@ table { width: 100%; border-collapse: collapse; margin-top: 10px; }
 td, th { padding: 12px 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
 th { color: var(--acc); }
 .action-btn { background: var(--acc); color: #000; border: none; padding: 10px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+*/
