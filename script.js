@@ -1,108 +1,48 @@
-const translations = {
-    ro: { title: "Pescuit Exact", dunare: "DUNĂRE", balti: "BĂLȚI", score: "Șanse mari de captură!" },
-    en: { title: "Exact Fishing", dunare: "DANUBE", balti: "LAKES", score: "High activity forecast!" }
-};
-
-document.getElementById('lang-select').addEventListener('change', (e) => {
-    const lang = e.target.value;
-    document.getElementById('title').innerText = translations[lang].title;
-    document.getElementById('btn-dunare').innerText = translations[lang].dunare;
-    document.getElementById('btn-balti').innerText = translations[lang].balti;
-    document.getElementById('score-text').innerText = translations[lang].score;
-});
-
-document.getElementById('theme-select').addEventListener('change', (e) => {
-    document.documentElement.setAttribute('data-theme', e.target.value);
-});
-
-// Funcția pentru a prelua cotele de la Dunăre
-async function fetchRiverData() {
-    const station = "GIURGIU"; // Putem schimba stația în funcție de selecție
-    const riverStatusEl = document.getElementById('river-status');
-    const riverLevelEl = document.getElementById('river-level');
-    const infoBox = document.getElementById('hydro-data');
-
-    try {
-        // Simulăm apelul către API-ul hidrologic (în producție folosim endpoint-ul INHGA/AFDJ)
-        // Pentru test, folosim datele de azi, 8 Aprilie 2026
-        const mockData = {
-            level: "+2 cm",
-            trend: "stabil",
-            temp: "11°C",
-            status_ro: "Apă stabilă - Ideal pentru feeder.",
-            status_en: "Stable water - Ideal for feeder fishing."
-        };
-
-        infoBox.classList.remove('hidden');
-        riverLevelEl.innerText = mockData.level;
-        
-        // Verificăm limba setată pentru a afișa statusul corect
-        const currentLang = document.getElementById('lang-select').value;
-        riverStatusEl.innerText = (currentLang === 'ro') ? mockData.status_ro : mockData.status_en;
-
-    } catch (error) {
-        console.error("Eroare la preluarea datelor:", error);
-        riverStatusEl.innerText = "Date momentan indisponibile.";
-    }
+:root {
+    --bg-color: #0b0e14;
+    --text-color: #ffffff;
+    --accent-color: #00ff88;
 }
 
-// Apelăm funcția când se apasă butonul DUNĂRE
-function selectType(type) {
-    if (type === 'river') {
-        fetchRiverData();
-    } else {
-        alert("Modul Bălți: Analizăm presiunea atmosferică...");
-    }
+[data-theme="solar"] {
+    --bg-color: #f4f4f4;
+    --text-color: #1a1a1a;
+    --accent-color: #ff8800;
 }
 
-// Înlocuiește 'YOUR_API_KEY' cu o cheie gratuită de pe openweathermap.org
-const WEATHER_API_KEY = 'YOUR_API_KEY'; 
-
-async function fetchLakeData(lat = 44.4268, lon = 26.1025) { // Coordonate implicite (București)
-    const scoreTextEl = document.getElementById('score-text');
-    const scoreValueEl = document.getElementById('score-value');
-    const currentLang = document.getElementById('lang-select').value;
-
-    try {
-        // În faza de test, folosim o simulare de date meteo (8 Aprilie 2026)
-        // Presiunea de azi: 1012 hPa (în scădere ușoară)
-        const pressure = 1012; 
-        
-        let activityScore = 0;
-        let advice = "";
-
-        // ALGORITM TEHNIC BĂLȚI
-        if (pressure >= 1010 && pressure <= 1015) {
-            activityScore = 85; // Presiune ideală
-            advice = (currentLang === 'ro') ? "Presiune perfectă! Peștele este activ." : "Perfect pressure! Fish are active.";
-        } else if (pressure < 1010) {
-            activityScore = 60; // Apă "grea", peștele poate fi la suprafață
-            advice = (currentLang === 'ro') ? "Presiune scăzută. Încearcă Zig-Rig." : "Low pressure. Try Zig-Rig.";
-        } else {
-            activityScore = 30; // Presiune mare, peștele e letargic
-            advice = (currentLang === 'ro') ? "Presiune ridicată. Pescuit dificil." : "High pressure. Difficult fishing.";
-        }
-
-        // Actualizăm UI
-        scoreValueEl.innerText = activityScore + "%";
-        scoreTextEl.innerText = advice;
-        
-        // Schimbăm culoarea cercului în funcție de scor
-        const circle = document.querySelector('.score-circle');
-        circle.style.borderColor = activityScore > 70 ? "#00ff88" : (activityScore > 40 ? "#ff9900" : "#ff4444");
-
-    } catch (error) {
-        scoreTextEl.innerText = "Eroare la preluarea datelor meteo.";
-    }
+[data-theme="camo"] {
+    --bg-color: #353a1c;
+    --text-color: #f0e68c;
+    --accent-color: #8b4513;
 }
 
-// Modificăm funcția de selecție
-function selectType(type) {
-    const hydroBox = document.getElementById('hydro-data');
-    if (type === 'river') {
-        fetchRiverData(); // Funcția de Dunăre de mai devreme
-    } else {
-        hydroBox.classList.add('hidden'); // Ascundem datele de Dunăre
-        fetchLakeData(); // Activăm algoritmul de bălți
-    }
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    transition: 0.3s;
+    margin: 0; padding: 20px;
 }
+
+.top-bar { display: flex; justify-content: space-between; margin-bottom: 30px; }
+
+.score-circle {
+    width: 120px; height: 120px;
+    border: 5px solid var(--accent-color);
+    border-radius: 50%;
+    margin: 20px auto;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; font-weight: bold;
+}
+
+.selection-cards { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
+
+.card {
+    background: rgba(128, 128, 128, 0.2);
+    border: 2px solid var(--accent-color);
+    color: var(--text-color);
+    padding: 15px; border-radius: 12px;
+    cursor: pointer; flex: 1; max-width: 150px;
+}
+
+.card:hover { transform: scale(1.05); }
