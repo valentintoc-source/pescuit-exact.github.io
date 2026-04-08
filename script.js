@@ -1,72 +1,53 @@
-const translations = {
-    ro: { 
-        title: "Pescuit Exact", 
-        dunare: "DUNĂRE", 
-        balti: "BĂLȚI / LACURI", 
-        select: "Selectează un loc", 
-        river_ok: "Apă stabilă - Ideal feeder", 
-        lake_ok: "Presiune perfectă! Peștele e activ." 
-    },
-    en: { 
-        title: "Exact Fishing", 
-        dunare: "DANUBE", 
-        balti: "LAKES", 
-        select: "Select a location", 
-        river_ok: "Stable water - Ideal for feeder", 
-        lake_ok: "Perfect pressure! Fish are active." 
-    }
-};
-
-// Schimbare Limbă
-document.getElementById('lang-select').addEventListener('change', (e) => {
-    const lang = e.target.value;
-    document.getElementById('title').innerText = translations[lang].title;
-    document.getElementById('btn-dunare').innerText = translations[lang].dunare;
-    document.getElementById('btn-balti').innerText = translations[lang].balti;
-    
-    // Actualizăm și textul de scor dacă a fost deja selectat ceva
-    const currentScoreText = document.getElementById('score-text').innerText;
-    if (currentScoreText !== "Selectează un loc de pescuit" && currentScoreText !== "Select a location") {
-        const isRiver = document.getElementById('hydro-data').style.display === "block";
-        document.getElementById('score-text').innerText = isRiver ? translations[lang].river_ok : translations[lang].lake_ok;
-    }
-});
-
-// Schimbare Temă
-document.getElementById('theme-select').addEventListener('change', (e) => {
-    document.documentElement.setAttribute('data-theme', e.target.value);
-});
-
-// Logică Selecție REPARATĂ
-function selectType(type) {
-    const scoreVal = document.getElementById('score-value');
-    const scoreText = document.getElementById('score-text');
-    const hydroBox = document.getElementById('hydro-data');
-    const lang = document.getElementById('lang-select').value;
-
-    if (type === 'river') {
-        // Resetăm și forțăm afișarea pentru Dunăre
-        scoreVal.innerText = "85%";
-        scoreVal.style.color = "#00ff88";
-        scoreText.innerText = translations[lang].river_ok;
-        
-        hydroBox.style.display = "block"; // Arătăm caseta
-        document.getElementById('river-status').innerText = translations[lang].river_ok;
-        console.log("Switch to River Mode");
-    } else if (type === 'lake') {
-        // Resetăm și ascundem pentru Bălți
-        scoreVal.innerText = "70%";
-        scoreVal.style.color = "#ff9900";
-        scoreText.innerText = translations[lang].lake_ok;
-        
-        hydroBox.style.display = "none"; // Ascundem caseta de Dunăre
-        console.log("Switch to Lake Mode");
-    }
+:root {
+    --bg-color: #0b0e14;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --text-color: #ffffff;
+    --accent-color: #00ff88;
+    --pattern: url('https://transparenttextures.com');
 }
 
+[data-theme="solar"] {
+    --bg-color: #e0e0e0;
+    --card-bg: rgba(0, 0, 0, 0.05);
+    --text-color: #1a1a1a;
+    --accent-color: #ff6600;
+    --pattern: url('https://transparenttextures.com');
+}
 
-// Forțează tema la încărcarea paginii
-window.onload = () => {
-    const savedTheme = document.getElementById('theme-select').value;
-    document.documentElement.setAttribute('data-theme', savedTheme);
-};
+[data-theme="camo"] {
+    --bg-color: #3e442d;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --text-color: #f0e68c;
+    --accent-color: #8b4513;
+    --pattern: url('https://transparenttextures.com');
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: var(--pattern); /* Textura de fundal */
+    color: var(--text-color);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0; transition: 0.4s; min-height: 100vh;
+}
+
+.top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.3); }
+.logo { font-weight: bold; letter-spacing: 2px; color: var(--accent-color); }
+
+.score-circle {
+    width: 140px; height: 140px; border: 6px solid var(--accent-color);
+    border-radius: 50%; margin: 20px auto; display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; font-weight: bold; background: rgba(0,0,0,0.2);
+}
+
+.selection-cards { display: flex; gap: 10px; justify-content: center; padding: 20px; }
+.card { background: var(--card-bg); border: 1px solid var(--accent-color); color: var(--text-color); padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+.data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
+.data-card { background: var(--card-bg); padding: 15px; border-radius: 10px; text-align: left; border-left: 4px solid var(--accent-color); }
+
+.recommendation-box { background: var(--accent-color); color: #000; margin: 15px; padding: 15px; border-radius: 10px; font-weight: bold; }
+
+.table-container { padding: 15px; }
+table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
+th, td { padding: 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+th { background: rgba(0,0,0,0.2); color: var(--accent-color); }
