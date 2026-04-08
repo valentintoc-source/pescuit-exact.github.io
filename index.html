@@ -3,76 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact | Pro Dashboard</title>
+    <title>Pescuit Exact</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="overlay"></div> <!-- Pentru textura de fundal -->
-    
-    <header>
-        <div class="top-bar">
+    <div class="bg-overlay"></div>
+    <div class="content-wrapper">
+        <header>
             <select id="lang-select">
-                <option value="ro">🇷🇴 RO</option>
-                <option value="en">🇬🇧 EN</option>
+                <option value="ro">RO</option>
+                <option value="en">EN</option>
             </select>
-            <div class="logo">PESCUIT EXACT</div>
             <select id="theme-select">
-                <option value="dark">🌑 Midnight</option>
-                <option value="solar">☀️ Solar</option>
-                <option value="camo">🌿 Camo</option>
+                <option value="dark">Midnight</option>
+                <option value="solar">Solar</option>
+                <option value="camo">Camo</option>
             </select>
-        </div>
-    </header>
+        </header>
 
-    <main>
-        <div class="main-score">
-            <div class="score-circle">
-                <span id="score-value">--%</span>
+        <section class="hero">
+            <div class="score-display">
+                <div id="main-score">--%</div>
+                <p id="status-text">Alege locația de pescuit</p>
             </div>
-            <h2 id="score-text">Selectează Locația</h2>
-        </div>
+        </section>
 
-        <div class="selection-cards">
-            <button class="card" onclick="selectType('river')">🌊 DUNĂRE</button>
-            <button class="card" onclick="selectType('lake')">🎣 BĂLȚI / LACURI</button>
-        </div>
+        <nav class="main-nav">
+            <button onclick="updateData('river')">🌊 DUNĂRE</button>
+            <button onclick="updateData('lake')">🎣 BĂLȚI</button>
+        </nav>
 
-        <!-- ZONA DE DATE COMPLEXE -->
-        <div id="data-container" style="display: none;">
-            <div class="data-grid">
-                <div class="data-card">
-                    <h4 id="label-meteo">METEO & PRESIUNE</h4>
-                    <p id="val-presiune">1012 hPa (Stabil)</p>
-                    <p id="val-vant">Vânt: 12 km/h (S-V)</p>
+        <section id="details-section" class="hidden">
+            <div class="data-row">
+                <div class="info-card">
+                    <h4 id="h-meteo">Meteo</h4>
+                    <p id="d-presiune">--</p>
+                    <p id="d-vant">--</p>
                 </div>
-                <div class="data-card">
-                    <h4 id="label-solunar">SOLUNAR</h4>
-                    <p>Major: 14:20 - 16:20</p>
-                    <p>Minor: 08:10 - 09:10</p>
+                <div class="info-card">
+                    <h4 id="h-apa">Stare Apă</h4>
+                    <p id="d-cota">--</p>
+                    <p id="d-claritate">--</p>
                 </div>
             </div>
-
-            <div class="recommendation-box">
-                <h3 id="label-strategie">Strategie Recomandată</h3>
-                <p id="val-strategie">--</p>
+            
+            <div class="full-card">
+                <h4 id="h-strat">Strategie & Momeală</h4>
+                <p id="d-strat">--</p>
             </div>
 
-            <div class="table-container">
-                <h3 id="label-prognoza">Prognoză pe Ore (8 Aprilie 2026)</h3>
-                <table id="forecast-table">
-                    <thead>
-                        <tr><th>Ora</th><th>Activitate</th><th>Momeală</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>12:00</td><td>65%</td><td>Viermuși</td></tr>
-                        <tr><td>15:00</td><td>85%</td><td>Wafters</td></tr>
-                        <tr><td>18:00</td><td>70%</td><td>Porumb</td></tr>
-                    </tbody>
+            <div class="table-view">
+                <h4 id="h-prog">Prognoză Puncte Dunăre</h4>
+                <table id="river-table">
+                    <!-- Datele vor fi injectate aici -->
                 </table>
             </div>
-        </div>
-    </main>
-
+        </section>
+    </div>
     <script src="./script.js"></script>
 </body>
 </html>
