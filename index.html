@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact PRO</title>
+    <title>Pescuit Exact PRO | România</title>
     <link rel="stylesheet" href="https://unpkg.com" />
     <style>
         :root { --acc: #00ff88; --bg: #0b0e14; --text: #fff; }
@@ -12,59 +12,68 @@
         button { flex: 1; padding: 12px; border: 2px solid var(--acc); background: none; color: #fff; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; border-top: 4px solid var(--acc); text-align: left; margin-bottom: 20px; }
         #map { height: 250px; border-radius: 10px; margin-top: 10px; border: 1px solid var(--acc); }
-        input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--acc); background: #222; color: #fff; box-sizing: border-box; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        td, th { padding: 10px; border-bottom: 1px solid #333; text-align: left; font-size: 0.9rem; }
-        .hidden { display: none; }
+        input { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 2px solid var(--acc); background: #222; color: #fff; box-sizing: border-box; font-size: 1rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: rgba(0,0,0,0.2); }
+        td, th { padding: 12px; border-bottom: 1px solid #333; text-align: left; font-size: 0.9rem; }
+        th { color: var(--acc); }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <h2>PESCUIT EXACT PRO</h2>
+    <h2 style="color:var(--acc)">PESCUIT EXACT PRO</h2>
     <div class="nav">
         <button onclick="show('river')">🌊 DUNĂRE</button>
         <button onclick="show('lake')">🎣 BĂLȚI</button>
     </div>
 
     <section id="lake-section" class="hidden">
-        <input type="text" id="search" placeholder="Caută județ (ex: Ilfov, Giurgiu)..." oninput="filter()">
+        <input type="text" id="search" placeholder="Caută JUDEȚ (ex: Ilfov, Giurgiu, Dolj)..." oninput="filter()">
         <div id="details" class="card hidden">
             <h3 id="det-name" style="margin:0; color:var(--acc);"></h3>
             <p id="det-info"></p>
             <div id="map"></div>
         </div>
         <table>
-            <thead><tr><th>Nume</th><th>Județ</th><th>Taxă</th></tr></thead>
+            <thead><tr><th>Locație</th><th>Județ</th><th>Taxă</th></tr></thead>
             <tbody id="table-body"></tbody>
         </table>
     </section>
 
     <section id="river-section" class="hidden">
         <div class="card">
-            <h3>Cote Dunăre Live</h3>
-            <p>Giurgiu: +2cm (Stabil)</p>
-            <p>Baziaș: +12cm (Creștere)</p>
+            <h3>Cote Dunăre Live (8 Apr 2026)</h3>
+            <p><b>Giurgiu:</b> +2cm (Stabil)</p>
+            <p><b>Baziaș:</b> +12cm (Creștere)</p>
+            <p><b>Tulcea:</b> -4cm (Scădere)</p>
+            <p style="color:var(--acc)">Atenție: Prohibiția începe mâine, 9 Aprilie!</p>
         </div>
     </section>
 
     <script src="https://unpkg.com"></script>
     <script>
         const balti = [
-            { n: "Hermes Periș", j: "Ilfov", t: "150 RON", r: "C&R Sportiv.", lat: 44.68, lng: 26.01 },
-            { n: "Bila 2", j: "Giurgiu", t: "100 RON", r: "Caras permis.", lat: 44.31, lng: 25.75 },
-            { n: "Chiroiu 4", j: "Ialomița", t: "100 RON", r: "Crap >4kg eliberat.", lat: 44.48, lng: 26.43 },
-            { n: "Budeasa", j: "Argeș", t: "80 RON", r: "Pescuit baraj.", lat: 44.91, lng: 24.81 }
+            { n: "Bila 2", j: "Giurgiu", t: "100 RON", r: "C&R la crap >4kg. Max 4 lansete.", lat: 44.31, lng: 25.75 },
+            { n: "Hermes Periș", j: "Ilfov", t: "150 RON", r: "C&R Sportiv exclusiv. Doar fir de păr.", lat: 44.68, lng: 26.01 },
+            { n: "Chiroiu 4", j: "Ialomița", t: "100 RON", r: "Crap >4kg eliberat. Fără momeală vie.", lat: 44.48, lng: 26.43 },
+            { n: "Budeasa", j: "Argeș", t: "80 RON", r: "Pescuit pe baraj. Crap și Șalău.", lat: 44.91, lng: 24.81 },
+            { n: "Zăvideni", j: "Olt", t: "Permis ANPA", r: "Somn și crap mare pe baraj.", lat: 44.65, lng: 24.26 },
+            { n: "Suhaia", j: "Teleorman", t: "80 RON", r: "Crap sălbatic. Lac foarte mare.", lat: 43.74, lng: 25.21 },
+            { n: "Fântânele", j: "Dolj", t: "100 RON", r: "Crap și Ten. Maluri curate.", lat: 44.11, lng: 23.65 },
+            { n: "Dorobanțu", j: "Călărași", t: "100 RON", r: "Crap și Somn. Reținere 5kg.", lat: 44.22, lng: 26.95 },
+            { n: "Enisala", j: "Tulcea", t: "80 RON", r: "Lângă cetate. Caras mare.", lat: 44.88, lng: 28.83 }
         ];
 
         let map, marker;
         function show(id) {
-            document.getElementById('lake-section').className = id === 'lake' ? '' : 'hidden';
-            document.getElementById('river-section').className = id === 'river' ? '' : 'hidden';
+            document.getElementById('lake-section').classList.toggle('hidden', id !== 'lake');
+            document.getElementById('river-section').classList.toggle('hidden', id !== 'river');
             if(id === 'lake') {
                 render(balti);
                 if(!map) {
-                    map = L.map('map').setView([45.9, 24.9], 6);
+                    map = L.map('map').setView([44.5, 26.0], 7);
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
                 }
+                setTimeout(() => map.invalidateSize(), 300);
             }
         }
 
@@ -72,7 +81,7 @@
             const body = document.getElementById('table-body');
             body.innerHTML = data.map(b => `
                 <tr onclick="det('${b.n}')" style="cursor:pointer">
-                    <td>${b.n}</td><td>${b.j}</td><td>${b.t}</td>
+                    <td><b>${b.n}</b></td><td>${b.j}</td><td>${b.t}</td>
                 </tr>`).join('');
         }
 
@@ -83,16 +92,14 @@
 
         function det(name) {
             const b = balti.find(x => x.n === name);
-            document.getElementById('details').className = 'card';
+            document.getElementById('details').classList.remove('hidden');
             document.getElementById('det-name').innerText = b.n;
-            document.getElementById('det-info').innerHTML = `<b>Județ:</b> ${b.j} | <b>Taxă:</b> ${b.t}<br><b>Reguli:</b> ${b.r}`;
-            map.setView([b.lat, b.lng], 12);
+            document.getElementById('det-info').innerHTML = `<b>Județ:</b> ${b.j} | <b>Taxă:</b> ${b.t}<br><br><b>REGULAMENT:</b> ${b.r}`;
+            map.setView([b.lat, b.lng], 13);
             if(marker) map.removeLayer(marker);
-            marker = L.marker([b.lat, b.lng]).addTo(map);
-            setTimeout(() => map.invalidateSize(), 200);
+            marker = L.marker([b.lat, b.lng]).addTo(map).bindPopup(b.n).openPopup();
+            document.getElementById('details').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
 </html>
-
-
