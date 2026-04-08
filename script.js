@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+/*document.addEventListener('DOMContentLoaded', () => {
     // Baza de date extinsă cu exemple din județe cheie
     const lacuriDB = [
         { nume: "Chiroiu 4", judet: "Ialomița", taxa: "100 RON / 12h", reguli: "C&R la crap peste 4kg. Max 4 lansete.", rating: 5 },
