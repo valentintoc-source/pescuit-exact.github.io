@@ -26,16 +26,15 @@
         </header>
 
         <nav class="main-nav">
-            <button onclick="updateData('river')">🌊 DUNĂRE</button>
-            <button onclick="updateData('lake')">🎣 BĂLȚI</button>
-            <button onclick="showCalculator()">🧮 CALC</button>
+            <button type="button" onclick="updateData('river')">🌊 DUNĂRE</button>
+            <button type="button" onclick="updateData('lake')">🎣 BĂLȚI</button>
+            <button type="button" onclick="showCalculator()">🧮 CALC</button>
         </nav>
 
         <section id="details-section" class="hidden">
             <div id="search-container" class="hidden">
                 <input type="text" id="lake-search" placeholder="Caută județ sau nume..." onkeyup="filterLakes()">
             </div>
-
             <div class="pro-card">
                 <div class="card-header">
                     <h2 id="loc-name">Selectează Locația</h2>
@@ -49,7 +48,6 @@
                     <p id="loc-reguli">Selectează o opțiune din listă.</p>
                 </div>
             </div>
-
             <div class="table-view">
                 <table id="main-table"></table>
             </div>
