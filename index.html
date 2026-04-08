@@ -11,7 +11,7 @@
     <div class="content-wrapper">
         <header>
             <div class="header-left">
-                <button id="btn-home" onclick="resetApp()">🏠</button>
+                <button id="btn-home">🏠</button>
                 <select id="lang-select">
                     <option value="ro">RO</option>
                     <option value="en">EN</option>
@@ -26,14 +26,14 @@
         </header>
 
         <nav class="main-nav">
-            <button type="button" onclick="updateData('river')">🌊 DUNĂRE</button>
-            <button type="button" onclick="updateData('lake')">🎣 BĂLȚI</button>
-            <button type="button" onclick="showCalculator()">🧮 CALC</button>
+            <button id="nav-river">🌊 DUNĂRE</button>
+            <button id="nav-lake">🎣 BĂLȚI</button>
+            <button id="nav-calc">🧮 CALC</button>
         </nav>
 
         <section id="details-section" class="hidden">
             <div id="search-container" class="hidden">
-                <input type="text" id="lake-search" placeholder="Caută județ sau nume..." onkeyup="filterLakes()">
+                <input type="text" id="lake-search" placeholder="Caută județ sau nume...">
             </div>
             <div class="pro-card">
                 <div class="card-header">
@@ -60,8 +60,8 @@
                 <option value="caras">Caras / Plătică</option>
             </select>
             <p>Temperatură apă: <span id="temp-val">15</span>°C</p>
-            <input type="range" id="calc-temp" min="4" max="30" value="15" oninput="updateTempLabel(this.value)">
-            <button class="action-btn" onclick="calculateBait()">Generează Rețetă</button>
+            <input type="range" id="calc-temp" min="4" max="30" value="15">
+            <button id="btn-calculate" class="action-btn">Generează Rețetă</button>
             <div id="calc-result" class="info-block" style="margin-top:15px; display:none;"></div>
         </section>
     </div>
