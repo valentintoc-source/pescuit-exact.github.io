@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pescuit Exact | Fishing Forecast</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <select id="lang-select">
+                <option value="ro">🇷🇴 Română</option>
+                <option value="en">🇬🇧 English</option>
+            </select>
+            <select id="theme-select">
+                <option value="dark">🌑 Midnight</option>
+                <option value="solar">☀️ Solar</option>
+                <option value="camo">🌿 Camo</option>
+            </select>
+        </div>
+    </header>
+
+    <main id="app-content">
+        <h1 id="title">Pescuit Exact</h1>
+        
+        <!-- Scorul de Activitate -->
+        <div class="score-container">
+            <div class="score-circle">
+                <span id="score-value">85%</span>
+            </div>
+            <p id="score-text">Șanse mari de captură!</p>
+        </div>
+
+        <!-- Sectiune Selectie Locatie -->
+        <div class="selection-cards">
+            <button class="card" onclick="selectType('river')">
+                <span class="icon">🌊</span>
+                <span id="btn-dunare">DUNĂRE</span>
+            </button>
+            <button class="card" onclick="selectType('lake')">
+                <span class="icon">🎣</span>
+                <span id="btn-balti">BĂLȚI / LACURI</span>
+            </button>
+        </div>
+
+        <div id="hydro-data" class="info-box hidden">
+            <h3>Cota Dunării (Giurgiu): <span id="river-level">+2cm</span></h3>
+            <p id="river-status">Apă stabilă - Ideal pentru feeder.</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
