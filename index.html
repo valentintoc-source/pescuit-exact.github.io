@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact PRO | Sud Extins</title>
+    <title>Pescuit Exact PRO | Hartă Interactivă</title>
+    <!-- Leaflet CSS pentru hartă -->
+    <link rel="stylesheet" href="https://unpkg.com" />
     <style>
         :root { --text: #fff; --acc: #00ff88; --bg: #0b0e14; }
         [data-theme="solar"] { --text: #111; --acc: #ff6600; --bg: #f0f0f0; }
@@ -20,22 +22,20 @@
         #lake-search { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 8px; border: 2px solid var(--acc); background: rgba(255,255,255,0.1); color: var(--text); font-size: 1rem; box-sizing: border-box; }
         
         .pro-card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; border-top: 4px solid var(--acc); text-align: left; margin-bottom: 20px; }
-        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .data-item { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; font-size: 0.85rem; border-bottom: 2px solid var(--acc); }
         
+        /* Stilul pentru Hartă */
+        #map { height: 250px; width: 100%; border-radius: 12px; margin-top: 15px; border: 2px solid var(--acc); }
+
         table { width: 100%; border-collapse: collapse; margin-top: 10px; background: rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
         td, th { padding: 12px 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
         th { color: var(--acc); background: rgba(0,0,0,0.2); }
-        tr:hover { background: rgba(255,255,255,0.05); }
-
         .hidden { display: none !important; }
-        .sticky-search { position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 10; }
     </style>
 </head>
 <body>
     <div class="content-wrapper">
         <header>
-            <button onclick="location.reload()" style="background:var(--acc); border:none; padding:8px 12px; border-radius:5px; cursor:pointer; font-weight:bold;">🏠 HOME</button>
+            <button onclick="location.reload()" style="background:var(--acc); border:none; padding:8px 12px; border-radius:5px; cursor:pointer; font-weight:bold;">🏠</button>
             <div class="logo-text">PESCUIT EXACT</div>
             <select id="theme-select" style="background:none; color:var(--text); border:1px solid var(--acc); border-radius:4px;">
                 <option value="dark">Dark</option>
@@ -44,42 +44,17 @@
         </header>
 
         <nav class="main-nav">
-            <button onclick="showSection('river')">🌊 DUNĂRE LIVE</button>
-            <button onclick="showSection('lake')">🎣 BĂLȚI & LACURI</button>
+            <button onclick="showSection('river')">🌊 DUNĂRE</button>
+            <button onclick="showSection('lake')">🌍 HARTĂ BĂLȚI</button>
         </nav>
 
-        <section id="river-section" class="hidden">
-            <div class="pro-card">
-                <h2 style="margin:0; color:var(--acc);">Cote Dunăre (Live)</h2>
-                <p style="font-size:0.9rem;">Status: <b>PROHIBIȚIE (9 Apr - 7 Iun)</b></p>
-                <table>
-                    <thead><tr><th>Stație</th><th>Cotă</th><th>Trend</th></tr></thead>
-                    <tbody>
-                        <tr><td>Baziaș</td><td>+12</td><td>↗️</td></tr>
-                        <tr><td>Giurgiu</td><td>+2</td><td>➡️</td></tr>
-                        <tr><td>Oltenița</td><td>+5</td><td>↗️</td></tr>
-                        <tr><td>Călărași</td><td>+1</td><td>➡️</td></tr>
-                        <tr><td>Tulcea</td><td>-4</td><td>↘️</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
         <section id="lake-section" class="hidden">
-            <div class="sticky-search">
-                <input type="text" id="lake-search" placeholder="Caută JUDEȚ (Ilfov, Argeș, Olt, etc)...">
-            </div>
-
+            <input type="text" id="lake-search" placeholder="Caută Județ (ex: Ilfov, Argeș, Cluj)...">
+            
             <div id="lake-details" class="pro-card hidden">
                 <h2 id="loc-name" style="margin:0; color:var(--acc);">--</h2>
-                <div class="data-grid">
-                    <div class="data-item">💰 Taxă: <br><b id="loc-taxa">--</b></div>
-                    <div class="data-item">📍 Județ: <br><b id="loc-judet">--</b></div>
-                </div>
-                <div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:8px;">
-                    <h4 style="margin:0 0 5px 0; color:var(--acc);">Regulament:</h4>
-                    <p id="loc-reguli" style="margin:0; font-size:0.9rem; line-height:1.4;">--</p>
-                </div>
+                <p id="loc-reguli" style="font-size:0.9rem; margin: 10px 0;">--</p>
+                <div id="map"></div> <!-- Containerul Hărții -->
             </div>
 
             <table>
@@ -87,41 +62,42 @@
                 <tbody id="lake-table-body"></tbody>
             </table>
         </section>
+
+        <section id="river-section" class="hidden">
+            <div class="pro-card"><h2>Cote Dunăre Live</h2><p>Datele se actualizează automat...</p></div>
+        </section>
     </div>
 
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com"></script>
     <script>
+        let map;
+        let marker;
+
         const baltiDB = [
-            // ILFOV
-            { n: "Hermes Periș", j: "Ilfov", t: "150 RON / 24h", r: "Pescuit exclusiv C&R. Doar monturi cu fir de păr și cârlig fără spin. Saltea tip cadă obligatorie." },
-            { n: "Moara Vlăsiei 2", j: "Ilfov", t: "120 RON / 12h", r: "Fără momeală vie. Standuri dotate cu curent. Pescuit sportiv de înaltă densitate." },
-            { n: "Săftica", j: "Ilfov", t: "100 RON", r: "Crap, caras, amur. Reținere permisă în limita regulamentului intern." },
-            { n: "Snagov (Lac)", j: "Ilfov", t: "Permis ANPA", r: "Regim de ape publice. Atenție la zonele protejate și navigație." },
-            // ARGES
-            { n: "Budeasa", j: "Argeș", t: "80 RON / zi", r: "Pescuit pe baraj. Crap, șalău și plătică mare. Necesită echipament pentru distanță." },
-            { n: "Bascov", j: "Argeș", t: "60 RON", r: "Locație excelentă pentru feeder. Caras și crap de dimensiuni medii." },
-            { n: "Golești (Lac)", j: "Argeș", t: "Permis ANPA", r: "Pescuit la somn și șalău. Respectați perioadele de prohibiție." },
-            // OLT
-            { n: "Zăvideni", j: "Olt", t: "Permis ANPA + Taxă", r: "Zonă celebră pentru somn și crap mare pe barajele Oltului." },
-            { n: "Ipotești", j: "Olt", t: "80 RON", r: "Crap sălbatic și amur. Necesită nădire grea pentru a fixa peștele." },
-            { n: "Slătioara", j: "Olt", t: "60 RON", r: "Pescuit la feeder și staționar. Maluri accesibile." },
-            // GIURGIU
-            { n: "Bila 2", j: "Giurgiu", t: "100 RON / 12h", r: "C&R la crap >4kg. Max 4 lansete. Reținere caras permisă." },
-            { n: "Facău", j: "Giurgiu", t: "80 RON / 12h", r: "Se pot reține 5kg crap. Plantatul permis (50 lei extra)." },
-            // IALOMITA
-            { n: "Chiroiu 4", j: "Ialomița", t: "100 RON", r: "C&R obligatoriu la crap peste 4kg. Fără momeală vie." },
-            // CALARASI
-            { n: "Dorobanțu", j: "Călărași", t: "100 RON", r: "Crap, Ten și Somn. Se reține în limita a 5kg." },
-            // TULCEA
-            { n: "Enisala", j: "Tulcea", t: "80 RON", r: "Pescuit la intrare în Deltă. Caras mare și Șalău." },
-            // DOLJ
-            { n: "Fântânele", j: "Dolj", t: "100 RON", r: "Crap și Ten. Maluri curate, ideal pentru weekend." }
+            { n: "Hermes Periș", j: "Ilfov", t: "150 RON", r: "C&R exclusiv. Saltea tip cadă.", lat: 44.6853, lng: 26.0125 },
+            { n: "Bila 2", j: "Giurgiu", t: "100 RON", r: "Max 4 lansete. Caras permis.", lat: 44.3167, lng: 25.7500 },
+            { n: "Chiroiu 4", j: "Ialomița", t: "100 RON", r: "Crap >4kg eliberat.", lat: 44.4833, lng: 26.4333 },
+            { n: "Budeasa", j: "Argeș", t: "80 RON", r: "Pescuit pe baraj. Crap și Șalău.", lat: 44.9167, lng: 24.8167 },
+            { n: "Tureni", j: "Cluj", t: "80 RON", r: "Feeder și Crap.", lat: 46.6167, lng: 23.7000 },
+            { n: "Enisala", j: "Tulcea", t: "80 RON", r: "Lângă cetate. Caras mare.", lat: 44.8833, lng: 28.8333 }
         ];
+
+        function initMap() {
+            if (!map) {
+                map = L.map('map').setView([45.9432, 24.9668], 6); // Centrat pe România
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            }
+        }
 
         function showSection(id) {
             document.getElementById('river-section').classList.add('hidden');
             document.getElementById('lake-section').classList.add('hidden');
             document.getElementById(id + '-section').classList.remove('hidden');
-            if(id === 'lake') renderTable(baltiDB);
+            if(id === 'lake') {
+                initMap();
+                renderTable(baltiDB);
+            }
         }
 
         function renderTable(data) {
@@ -136,23 +112,23 @@
         }
 
         function showDetails(item) {
-            const card = document.getElementById('lake-details');
-            card.classList.remove('hidden');
+            document.getElementById('lake-details').classList.remove('hidden');
             document.getElementById('loc-name').innerText = item.n;
-            document.getElementById('loc-taxa').innerText = item.t;
-            document.getElementById('loc-judet').innerText = item.j;
             document.getElementById('loc-reguli').innerText = item.r;
-            card.scrollIntoView({ behavior: 'smooth' });
+            
+            // Actualizare Hartă
+            map.invalidateSize(); // Fix pentru containere hidden
+            map.setView([item.lat, item.lng], 13);
+            if (marker) map.removeLayer(marker);
+            marker = L.marker([item.lat, item.lng]).addTo(map).bindPopup(item.n).openPopup();
+            
+            document.getElementById('lake-details').scrollIntoView({ behavior: 'smooth' });
         }
 
         document.getElementById('lake-search').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
             const filtered = baltiDB.filter(b => b.j.toLowerCase().includes(val) || b.n.toLowerCase().includes(val));
             renderTable(filtered);
-        });
-
-        document.getElementById('theme-select').addEventListener('change', (e) => {
-            document.documentElement.setAttribute('data-theme', e.target.value);
         });
     </script>
 </body>
