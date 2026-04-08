@@ -3,6 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pescuit Exact PRO | România</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="content-wrapper">
+        <header>
+            <div class="header-left">
+                <button id="btn-home" onclick="resetApp()">🏠</button>
+                <select id="lang-select">
+                    <option value="ro">RO</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
+            <div class="logo-text">PESCUIT EXACT</div>
+            <select id="theme-select">
+                <option value="dark">Midnight</option>
+                <option value="solar">Solar</option>
+                <option value="camo">Camo</option>
+            </select>
+        </header>
+
+        <nav class="main-nav">
+            <button onclick="updateData('river')">🌊 DUNĂRE</button>
+            <button onclick="updateData('lake')">🎣 TOATE BĂLȚILE</button>
+            <button onclick="showCalculator()">🧮 CALCULATOR</button>
+        </nav>
+
+        <section id="details-section" class="hidden">
+            <div id="search-container" class="hidden">
+                <input type="text" id="lake-search" placeholder="Caută Județ sau Nume Baltă..." onkeyup="filterLakes()">
+            </div>
+
+            <!-- Card Principal Dinamic -->
+            <div class="pro-card">
+                <div class="card-header">
+                    <h2 id="loc-name">Selectează Locația</h2>
+                    <div id="loc-rating" class="stars">⭐⭐⭐⭐⭐</div>
+                </div>
+                <div class="data-grid">
+                    <div class="data-item"><span>Taxă:</span> <b id="loc-taxa">--</b></div>
+                    <div class="data-item"><span>Județ:</span> <b id="loc-judet">--</b></div>
+                </div>
+                <div class="info-block">
+                    <h4>📜 Regulament & Detalii:</h4>
+                    <p id="loc-reguli">Selectează o baltă din lista de mai jos.</p>
+                </div>
+            </div>
+
+            <div class="table-view">
+                <h4 id="table-title">Informații</h4>
+                <div class="table-scroll">
+                    <table id="main-table"></table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sectiune Calculator Momeli -->
+        <section id="calc-section" class="hidden pro-card">
+            <h3>🧮 Calculator Nadă & Momeală</h3>
+            <label>Specia țintă:</label>
+            <select id="calc-fish">
+                <option value="crap">Crap</option>
+                <option value="caras">Caras / Plătică</option>
+                <option value="mreana">Mreană (Dunăre)</option>
+            </select>
+            <label>Temperatura apei:</label>
+            <input type="range" id="calc-temp" min="4" max="30" value="15" oninput="updateTempLabel(this.value)">
+            <p>Temperatură: <span id="temp-val">15</span>°C</p>
+            <button class="action-btn" onclick="calculateBait()">Generează Rețetă</button>
+            <div id="calc-result" class="info-block" style="margin-top:10px; display:none;"></div>
+        </section>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>
+
+
+
+<!--
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pescuit Exact | Pro</title>
     <link rel="stylesheet" href="./style.css">
 </head>
