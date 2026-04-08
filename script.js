@@ -1,37 +1,33 @@
-const content = {
+const db = {
     ro: {
-        river: "DUNĂRE", lake: "BĂLȚI", strat: "Folosește momeală vie pe pragul de 4m.",
-        lake_strat: "Pescuit fin la method feeder cu pelete de 2mm.",
-        meteo: "METEO & PRESIUNE", sol: "SOLUNAR", prog: "Prognoză pe Ore"
-    },
-    en: {
-        river: "DANUBE", lake: "LAKES", strat: "Use live bait on the 4m shelf.",
-        lake_strat: "Fine method feeder with 2mm pellets.",
-        meteo: "WEATHER & PRESSURE", sol: "SOLUNAR", prog: "Hourly Forecast"
+        river: { score: "82%", status: "Dunărea este în palier!", pres: "1012 hPa", vant: "10 km/h SV", cota: "Giurgiu: +2cm", clar: "Tulbure medie", strat: "Feeder greu, coșuleț 120g, momeală vie la prag.",
+                 table: "<tr><th>Stație</th><th>Cotă</th><th>Tendință</th></tr><tr><td>Baziaș</td><td>+15</td><td>Creștere</td></tr><tr><td>Giurgiu</td><td>+2</td><td>Stabil</td></tr><tr><td>Tulcea</td><td>-5</td><td>Scădere</td></tr>"
+        },
+        lake: { score: "65%", status: "Bălți: Presiune în creștere", pres: "1016 hPa", vant: "5 km/h E", cota: "Adâncime: 3.5m", clar: "Limpede", strat: "Method feeder, pelete 2mm, wafter roz." }
     }
 };
 
-function selectType(type) {
+function updateData(type) {
     const lang = document.getElementById('lang-select').value;
-    const container = document.getElementById('data-container');
-    const strat = document.getElementById('val-strategie');
-    const scoreVal = document.getElementById('score-value');
+    const data = db[lang][type];
+    const section = document.getElementById('details-section');
     
-    container.style.display = "block";
+    section.classList.remove('hidden');
+    document.getElementById('main-score').innerText = data.score;
+    document.getElementById('status-text').innerText = data.status;
+    document.getElementById('d-presiune').innerText = data.pres;
+    document.getElementById('d-vant').innerText = data.vant;
+    document.getElementById('d-cota').innerText = data.cota;
+    document.getElementById('d-claritate').innerText = data.clar;
+    document.getElementById('d-strat').innerText = data.strat;
     
     if(type === 'river') {
-        scoreVal.innerText = "82%";
-        strat.innerText = content[lang].river;
-        document.getElementById('val-presiune').innerText = "1011 hPa (În scădere)";
-        document.getElementById('val-strategie').innerText = content[lang].strat;
+        document.getElementById('river-table').innerHTML = data.table;
+        document.getElementById('h-prog').style.display = "block";
     } else {
-        scoreVal.innerText = "65%";
-        document.getElementById('val-presiune').innerText = "1015 hPa (Stabil)";
-        document.getElementById('val-strategie').innerText = content[lang].lake_strat;
+        document.getElementById('river-table').innerHTML = "";
+        document.getElementById('h-prog').style.display = "none";
     }
-    
-    // Scroll automat la date
-    container.scrollIntoView({ behavior: 'smooth' });
 }
 
 document.getElementById('theme-select').addEventListener('change', (e) => {
