@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pescuit Exact PRO | Monitorizare Dunăre & Bălți</title>
+    <title>Pescuit Exact PRO | Algoritm Balistic 2026</title>
     <style>
-        :root { --acc: #00ff88; --bg: #0b0e14; --text: #fff; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; text-align: center; }
+        :root { --acc: #00ff88; --bg: #0b0e14; --text: #fff; --warn: #ffcc00; --danger: #ff4444; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; text-align: center; }
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--acc); padding-bottom: 10px; }
         .btn-home { background: var(--acc); border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
         .nav { display: flex; gap: 10px; margin-bottom: 20px; }
         .nav-btn { flex: 1; padding: 15px; border: 2px solid var(--acc); background: rgba(0,255,136,0.1); color: #fff; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
         .card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; border-top: 4px solid var(--acc); text-align: left; margin-bottom: 20px; display: none; }
-        input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 8px; border: 2px solid var(--acc); background: #1a1a1a; color: #fff; box-sizing: border-box; }
         .table-wrapper { overflow-x: auto; background: rgba(0,0,0,0.3); border-radius: 8px; }
-        table { width: 100%; border-collapse: collapse; min-width: 550px; }
-        th { background: var(--acc); color: #000; padding: 10px; text-align: left; font-size: 0.7rem; text-transform: uppercase; }
-        td { padding: 10px; border-bottom: 1px solid #333; text-align: left; font-size: 0.8rem; }
-        .temp { color: #ffcc00; font-weight: bold; }
-        .up { color: #ff4444; } .down { color: #44aaff; } .stable { color: var(--acc); }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        th { background: var(--acc); color: #000; padding: 10px; text-align: left; font-size: 0.65rem; text-transform: uppercase; }
+        td { padding: 12px 10px; border-bottom: 1px solid #333; text-align: left; font-size: 0.85rem; }
+        .val-p { color: #44aaff; font-weight: bold; }
+        .chance-high { color: var(--acc); font-weight: bold; text-shadow: 0 0 5px #00ff88; }
+        .chance-med { color: var(--warn); }
+        .chance-low { color: var(--danger); }
+        input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 8px; border: 2px solid var(--acc); background: #1a1a1a; color: #fff; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -29,49 +31,35 @@
     </header>
     
     <div class="nav">
-        <button class="nav-btn" onclick="scena('river')">🌊 COTE & TEMP. DUNĂRE</button>
-        <button class="nav-btn" onclick="scena('lake')">🎣 BĂLȚI & LACURI</button>
+        <button class="nav-btn" onclick="scena('river')">🌊 ȘANSE DUNĂRE</button>
+        <button class="nav-btn" onclick="scena('lake')">🎣 ȘANSE BĂLȚI</button>
     </div>
 
-    <!-- MONITORIZARE DUNARE SORTATA CU TEMPERATURA -->
+    <!-- SECTIUNE DUNARE CU PRESIUNE ATMOSFERICA -->
     <div id="zona-dunare" class="card">
-        <h3 style="color:var(--acc); margin-top:0;">Hidrologie Dunăre (Live 08.04.2026)</h3>
+        <h3 style="color:var(--acc); margin-top:0;">Predictor Avansat (Meteo + Hidro)</h3>
+        <p style="font-size:0.75rem; color:var(--warn); margin-bottom:10px;">*Scorul include: Temperatură (40%), Presiune (30%), Tendință Cotă (30%).</p>
         <div class="table-wrapper">
             <table>
                 <thead>
-                    <tr><th>Stație</th><th>Km</th><th>Cotă</th><th>Temp.</th><th>Debit</th><th>Tend.</th></tr>
+                    <tr><th>Stație</th><th>Km</th><th>Cotă</th><th>Temp.</th><th>Presiune</th><th>Tend.</th><th>ACTIVITATE</th></tr>
                 </thead>
-                <tbody>
-                    <tr><td><b>Baziaș</b></td><td>1075</td><td>+12</td><td class="temp">12.4°C</td><td>6600</td><td class="up">↗</td></tr>
-                    <tr><td>Moldova Nouă</td><td>1045</td><td>+10</td><td class="temp">12.3°C</td><td>6620</td><td class="up">↗</td></tr>
-                    <tr><td>Orșova</td><td>955</td><td>+15</td><td class="temp">11.8°C</td><td>6800</td><td class="up">↗</td></tr>
-                    <tr><td><b>Tr. Severin</b></td><td>931</td><td>+45</td><td class="temp">11.5°C</td><td>7100</td><td class="up">↗</td></tr>
-                    <tr><td><b>Calafat</b></td><td>795</td><td>+18</td><td class="temp">11.2°C</td><td>6800</td><td class="up">↗</td></tr>
-                    <tr><td><b>Bechet</b></td><td>679</td><td>+5</td><td class="temp">11.1°C</td><td>6450</td><td class="stable">→</td></tr>
-                    <tr><td><b>Corabia</b></td><td>630</td><td>+3</td><td class="temp">10.9°C</td><td>6400</td><td class="stable">→</td></tr>
-                    <tr><td><b>Zimnicea</b></td><td>553</td><td>+2</td><td class="temp">10.8°C</td><td>6300</td><td class="stable">→</td></tr>
-                    <tr><td><b>Giurgiu</b></td><td>493</td><td>+2</td><td class="temp">10.7°C</td><td>6200</td><td class="stable">→</td></tr>
-                    <tr><td><b>Oltenița</b></td><td>430</td><td>+4</td><td class="temp">10.6°C</td><td>6220</td><td class="stable">→</td></tr>
-                    <tr><td><b>Călărași</b></td><td>370</td><td>+1</td><td class="temp">10.5°C</td><td>6150</td><td class="stable">→</td></tr>
-                    <tr><td><b>Cernavodă</b></td><td>300</td><td>+2</td><td class="temp">10.3°C</td><td>6100</td><td class="stable">→</td></tr>
-                    <tr><td><b>Brăila</b></td><td>170</td><td>-2</td><td class="temp">10.1°C</td><td>5950</td><td class="down">↘</td></tr>
-                    <tr><td><b>Galați</b></td><td>150</td><td>-3</td><td class="temp">9.9°C</td><td>5900</td><td class="down">↘</td></tr>
-                    <tr><td><b>Tulcea</b></td><td>71</td><td>-4</td><td class="temp">9.7°C</td><td>5800</td><td class="down">↘</td></tr>
-                    <tr><td><b>Sulina</b></td><td>0</td><td>-1</td><td class="temp">9.5°C</td><td>1200</td><td class="down">↘</td></tr>
+                <tbody id="river-body">
+                    <!-- Dinamic -->
                 </tbody>
             </table>
         </div>
-        <p style="font-size:0.75rem; margin-top:10px;">ℹ️ <i>Pescuitul la crap devine activ când temp. depășește 12°C.</i></p>
     </div>
 
     <!-- SECTIUNE BALTI -->
     <div id="zona-balti" style="display:none;">
         <input type="text" id="find" placeholder="Caută Județ (ex: Ilfov, Giurgiu)..." oninput="doSearch()">
         <div id="info-card" class="card">
-            <h2 id="d-nume" style="color:var(--acc); margin:0;"></h2>
-            <p id="d-meta" style="font-weight:bold; margin:10px 0;"></p>
+            <h2 id="d-nume" style="margin:0; color:var(--acc);"></h2>
+            <div id="chance-indicator" style="margin: 10px 0; font-size: 1.2rem;"></div>
+            <p id="d-meta"></p>
             <div style="background:#000; padding:15px; border-radius:10px; border-left: 4px solid var(--acc);">
-                <h4 style="margin:0 0 5px 0; font-size:0.8rem; color:var(--acc)">DETALII & REGULAMENT:</h4>
+                <h4 style="margin:0 0 5px 0; font-size:0.8rem; color:var(--acc)">ANALIZĂ METEO-TACTICĂ:</h4>
                 <p id="d-reguli" style="margin:0; font-size:0.9rem; line-height:1.4;"></p>
             </div>
         </div>
@@ -84,19 +72,56 @@
     </div>
 
     <script>
-        const db = [
-            {n: "Hermes Periș", j: "Ilfov", t: "150 RON", r: "C&R Sportiv. Temp. apă: 11°C. Doar fir de păr."},
-            {n: "Moara Vlăsiei 2", j: "Ilfov", t: "120 RON", r: "Temp. apă: 11.5°C. Standuri cu curent. Fără momeală vie."},
-            {n: "Bila 2", j: "Giurgiu", t: "100 RON", r: "Temp. apă: 12°C. Reținere caras permisă. Max 4 lansete."},
-            {n: "Chiroiu 4", j: "Ialomița", t: "100 RON", r: "Temp. apă: 12.2°C. Pescuit sportiv. C&R crap mare."},
-            {n: "Suhaia", j: "Teleorman", t: "80 RON", r: "Temp. apă: 10.5°C. Crap sălbatic. Atenție la vânt."},
-            {n: "Fântânele", j: "Dolj", t: "100 RON", r: "Temp. apă: 12.5°C. Crap și Ten. Camping permis."}
+        const riverData = [
+            {n: "Baziaș", km: 1075, cota: "+12", t: 12.4, p: 1008, tend: "up"},
+            {n: "Tr. Severin", km: 931, cota: "+45", t: 11.5, p: 1009, tend: "up"},
+            {n: "Calafat", km: 795, cota: "+18", t: 11.2, p: 1010, tend: "up"},
+            {n: "Bechet", km: 679, cota: "+5", t: 11.1, p: 1011, tend: "stable"},
+            {n: "Giurgiu", km: 493, cota: "+2", t: 10.7, p: 1012, tend: "stable"},
+            {n: "Călărași", km: 370, cota: "+1", t: 10.5, p: 1012, tend: "stable"},
+            {n: "Brăila", km: 170, cota: "-2", t: 10.1, p: 1013, tend: "down"},
+            {n: "Tulcea", km: 71, cota: "-4", t: 9.7, p: 1014, tend: "down"}
         ];
+
+        const baltiDB = [
+            {n: "Hermes Periș", j: "Ilfov", t: "150 RON", temp: 11, p: 1011, r: "Presiune stabilă. Peștele se hrănește constant. Folosește momeli vizibile."},
+            {n: "Bila 2", j: "Giurgiu", t: "100 RON", temp: 12.5, p: 1009, r: "Presiune scăzută! Șanse mari de captură la crap. Mergi pe arome tari."},
+            {n: "Chiroiu 4", j: "Ialomița", t: "100 RON", temp: 12.2, p: 1015, r: "Presiune în creștere. Peștele tinde să urce între ape. Încearcă Zig-Rig."},
+            {n: "Fântânele", j: "Dolj", t: "100 RON", temp: 13, p: 1010, r: "Condiții meteo ideale. Pescuit activ la feeder."}
+        ];
+
+        function calculateAdvancedScore(temp, pres, tend) {
+            let score = 0;
+            // Temperatura (max 40)
+            score += (temp > 12) ? 40 : (temp > 10 ? 25 : 10);
+            // Presiune (max 30) - Ideal intre 1008 si 1012
+            score += (pres >= 1008 && pres <= 1012) ? 30 : (pres < 1008 ? 20 : 5);
+            // Tendinta (max 30)
+            score += (tend === "stable") ? 30 : (tend === "down" ? 20 : 5);
+            return score;
+        }
 
         function scena(id) {
             document.getElementById('zona-balti').style.display = (id === 'lake' ? 'block' : 'none');
             document.getElementById('zona-dunare').style.display = (id === 'river' ? 'block' : 'none');
-            if(id === 'lake') updateL(db);
+            if(id === 'river') renderRiver();
+            if(id === 'lake') updateL(baltiDB);
+        }
+
+        function renderRiver() {
+            const body = document.getElementById('river-body');
+            body.innerHTML = riverData.map(d => {
+                const score = calculateAdvancedScore(d.t, d.p, d.tend);
+                let cls = score > 75 ? "chance-high" : (score > 50 ? "chance-med" : "chance-low");
+                let tIco = d.tend === "up" ? "↗" : (d.tend === "down" ? "↘" : "→");
+                return `<tr>
+                    <td><b>${d.n}</b></td><td>${d.km}</td><td>${d.cota}</td>
+                    <td style="color:#ffcc00">${d.t}°C</td>
+                    <td class="val-p">${d.p} hPa</td>
+                    <td>${tIco}</td>
+                    <td class="${cls}">${score}%</td>
+                </tr>`;
+            }).join('');
         }
 
         function updateL(data) {
@@ -108,15 +133,18 @@
 
         function doSearch() {
             const v = document.getElementById('find').value.toLowerCase();
-            updateL(db.filter(b => b.j.toLowerCase().includes(v) || b.n.toLowerCase().includes(v)));
+            updateL(baltiDB.filter(b => b.j.toLowerCase().includes(v) || b.n.toLowerCase().includes(v)));
         }
 
         function detalii(nume) {
-            const b = db.find(x => x.n === nume);
+            const b = baltiDB.find(x => x.n === nume);
+            const score = calculateAdvancedScore(b.temp, b.p, "stable");
             const card = document.getElementById('info-card');
             card.style.display = 'block';
+            let cls = score > 75 ? "chance-high" : (score > 50 ? "chance-med" : "chance-low");
             document.getElementById('d-nume').innerText = b.n;
-            document.getElementById('d-meta').innerHTML = `📍 Județ: ${b.j} | 💰 Taxă: ${b.t}`;
+            document.getElementById('chance-indicator').innerHTML = `Scor Activitate: <span class="${cls}">${score}%</span>`;
+            document.getElementById('d-meta').innerHTML = `📍 Județ: ${b.j} | 💰 Taxă: ${b.t}<br>🌡️ Temp: ${b.temp}°C | ⏲️ Presiune: ${b.p} hPa`;
             document.getElementById('d-reguli').innerText = b.r;
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
